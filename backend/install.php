@@ -20,8 +20,6 @@ function run_installation(PDO $pdo): array
     ];
 
     try {
-        $pdo->beginTransaction();
-
         // Détecter le type de driver pour adapter les types de données
         $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     $id = $driver === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
@@ -316,11 +314,9 @@ function run_installation(PDO $pdo): array
             throw new Exception("La vérification post-installation a échoué.");
         }
 
-        $pdo->commit();
         $results['success'] = true;
 
     } catch (Exception $e) {
-        $pdo->rollBack();
         $results['error'] = $e->getMessage();
         // En cas d'erreur, on peut logger l'erreur pour le débogage
         error_log("Erreur lors de l'installation de la base de données : " . $e->getMessage());

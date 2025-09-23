@@ -50,26 +50,19 @@ function table_exists(PDO $pdo, string $tableName): bool
     $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
 
     try {
-        $sql = '';
         if ($driver === 'sqlite') {
             $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name = :tableName";
-        } elseif ($driver === 'mysql') {
-            $sql = "SELECT 1 FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = :tableName LIMIT 1";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':tableName' => $tableName]);
+            return $stmt->fetchColumn() !== false;
         } else {
-            // Approche générique qui repose sur une exception pour les autres SGBD
-            $sql = "SELECT 1 FROM " . preg_replace('/[^a-zA-Z0-9_]/', '', $tableName) . " LIMIT 1";
-            $stmt = $pdo->query($sql);
-            return $stmt !== false;
+            // Pour MySQL et autres, on tente une requête simple.
+            // Si la table n'existe pas, une PDOException sera levée.
+            $pdo->query("SELECT 1 FROM " . preg_replace('/[^a-zA-Z0-9_]/', '', $tableName) . " LIMIT 1");
+            return true;
         }
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':tableName' => $tableName]);
-
-        return $stmt->fetchColumn() !== false;
-
     } catch (PDOException $e) {
-        // Si une exception est levée, cela signifie que la table n'existe pas ou qu'il y a une autre erreur.
-        // Dans le contexte de la vérification de l'existence, on peut supposer que c'est parce que la table n'existe pas.
+        // L'exception indique que la table n'existe probablement pas.
         return false;
     }
 }
