@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
 				hash = "confirm-reset-page";
 			}
 
-			const pageId = `${hash}-page`;
+			let pageId = `${hash}-page`;
 
-			// *** Sécurité : Vérification d'accès pour la page admin ***
-			if (hash === "admin") {
+			// *** Sécurité : Vérification d'accès pour la page admin et ses sous-routes ***
+			if (hash.startsWith("admin")) {
 				// Attendre que l'authentification soit vérifiée
 				await auth.waitForAuth();
 				if (!auth.isUserAdmin()) {
@@ -71,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					window.location.hash = "home"; // Redirection
 					return; // Arrêter le traitement pour cette route
 				}
+				// Si c'est une route admin, on doit afficher le conteneur principal 'admin-page'
+				pageId = "admin-page";
 			}
 
 			if (document.getElementById(pageId)) {
