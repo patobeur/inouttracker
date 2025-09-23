@@ -64,7 +64,7 @@ function create_tables_if_not_exists(PDO $pdo)
     CREATE TABLE IF NOT EXISTS sections (
         id " . $id . ",
         title VARCHAR(255) NOT NULL,
-        description TEXT,
+        description TEXT
     );";
 
     // les promos = [ "2022-2024", "2023-2025", "2024-2026", "2025-2027", "2026-2028" ]
@@ -73,7 +73,7 @@ function create_tables_if_not_exists(PDO $pdo)
     CREATE TABLE IF NOT EXISTS promos (
         id " . $id . ",
         title VARCHAR(255) NOT NULL,
-        description TEXT,
+        description TEXT
     );";
 
     $clients_sql = "
@@ -92,6 +92,8 @@ function create_tables_if_not_exists(PDO $pdo)
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         promo_id INT NOT NULL,
         section_id INT NOT NULL,
+        FOREIGN KEY (promo_id) REFERENCES promos(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+        FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE RESTRICT ON UPDATE RESTRICT
     );";
 
     $articles_sql = "
@@ -129,6 +131,7 @@ function create_tables_if_not_exists(PDO $pdo)
     $pdo->exec($articles_sql);
     $pdo->exec($movements_sql);
 
+
     // Vérifier si la table des utilisateurs est vide
     $stmt = $pdo->query("SELECT COUNT(*) FROM users");
     $user_count = $stmt->fetchColumn();
@@ -148,16 +151,13 @@ function create_tables_if_not_exists(PDO $pdo)
         $stmt->execute([$admin_email, $admin_pseudo, $admin_first_name, $admin_last_name, $admin_password_hash, $is_admin]);
     }
 
-    // Ajout des index pour les nouvelles tables
-    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_clients_search ON clients (last_name, first_name, email, phone);");
-    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_article_time ON movements (article_id, occurred_at);");
-    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_client_time ON movements (client_id, occurred_at);");
-    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_type_time ON movements (type, occurred_at);");
 
 
     if ($driver === 'sqlite') {
         // Ajout des index (SQLite supporte IF NOT EXISTS)
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_clients_search ON clients (last_name, first_name, email, phone);");
+        $pdo->exec("CREATE INDEX IF NOT EXISTS idx_clients_promo_id ON clients (promo_id);");
+        $pdo->exec("CREATE INDEX IF NOT EXISTS idx_clients_section_id ON clients (section_id);");
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_article_time ON movements (article_id, occurred_at);");
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_client_time ON movements (client_id, occurred_at);");
         $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_type_time ON movements (type, occurred_at);");
@@ -190,8 +190,101 @@ function create_tables_if_not_exists(PDO $pdo)
 
         // Ajout des index (MySQL)
         $createIndexIfMissing($pdo, 'clients',   'idx_clients_search',           'last_name, first_name, email, phone');
+        $createIndexIfMissing($pdo, 'clients',   'idx_clients_promo_id',         'promo_id');
+        $createIndexIfMissing($pdo, 'clients',   'idx_clients_section_id',       'section_id');
         $createIndexIfMissing($pdo, 'movements', 'idx_movements_article_time',   'article_id, occurred_at');
         $createIndexIfMissing($pdo, 'movements', 'idx_movements_client_time',    'client_id, occurred_at');
         $createIndexIfMissing($pdo, 'movements', 'idx_movements_type_time',      '`type`, occurred_at'); // `type` est un mot réservé, mieux l’échapper
+    }
+
+
+
+    // Ajout de 10 articles aléatoires pour les tests
+    $stmt = $pdo->query("SELECT COUNT(*) FROM articles");
+    if ($stmt->fetchColumn() == 0) { // On insère seulement si la table est vide
+        $article_names = ['Livre de maths', 'Roman "Le Rouge et le Noir"', 'BD "Asterix"', 'Dictionnaire Anglais-Français', 'Stylo', 'Cahier', 'Trousse', 'Sac à dos', 'Calculatrice', 'Gourde'];
+        $categories = ['Livre', 'Fourniture', 'Accessoire'];
+        $conditions = ['Neuf', 'Bon état', 'Usé'];
+
+        $sql = "INSERT INTO articles (barcode, `name`, category, `condition`) VALUES (?, ?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+
+        for ($i = 0; $i < 10; $i++) {
+            $name = $article_names[$i];
+            $category = $categories[array_rand($categories)];
+            $condition = $conditions[array_rand($conditions)];
+            // Assurer un barcode unique
+            $barcode = 'A' . str_pad($i + 1, 4, '0', STR_PAD_LEFT) . uniqid();
+
+            $stmt->execute([$barcode, $name, $category, $condition]);
+        }
+    }
+
+
+
+
+
+    // Insérer les données initiales pour les sections
+    $stmt = $pdo->query("SELECT COUNT(*) FROM sections");
+    if ($stmt->fetchColumn() == 0) {
+        $sections = [
+            ["BTS COM", "BTS Communication"],
+            ["BTS SIO", "BTS Services Informatiques aux Organisations"],
+            ["BACHELOR A", "Bachelor en Management et Gestion d'Entreprise"],
+            ["BACHELOR B", "Bachelor en Marketing et Communication"],
+            ["BACHELOR C", "Bachelor en Développement Web et Mobile"]
+        ];
+        $sql = "INSERT INTO sections (title, description) VALUES (?, ?)";
+        $stmt = $pdo->prepare($sql);
+        foreach ($sections as $section) {
+            $stmt->execute($section);
+        }
+    }
+
+    // Insérer les données initiales pour les promos
+    $stmt = $pdo->query("SELECT COUNT(*) FROM promos");
+    if ($stmt->fetchColumn() == 0) {
+        $promos = [
+            ["2022-2024", "Promotion 2022-2024 (2 ans)"],
+            ["2023-2025", "Promotion 2023-2025 (2 ans)"],
+            ["2024-2026", "Promotion 2024-2026 (2 ans)"],
+            ["2025-2027", "Promotion 2025-2027 (2 ans)"],
+            ["2026-2028", "Promotion 2026-2028 (2 ans)"]
+        ];
+        $sql = "INSERT INTO promos (title, description) VALUES (?, ?)";
+        $stmt = $pdo->prepare($sql);
+        foreach ($promos as $promo) {
+            $stmt->execute($promo);
+        }
+    }
+
+
+    // Ajout de 10 clients aléatoires pour les tests
+    $stmt = $pdo->query("SELECT COUNT(*) FROM clients");
+    if ($stmt->fetchColumn() == 0) { // On insère seulement si la table est vide
+        $promo_ids = $pdo->query("SELECT id FROM promos")->fetchAll(PDO::FETCH_COLUMN);
+        $section_ids = $pdo->query("SELECT id FROM sections")->fetchAll(PDO::FETCH_COLUMN);
+
+        if (!empty($promo_ids) && !empty($section_ids)) {
+            $first_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Heidi', 'Ivan', 'Judy'];
+            $last_names = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+
+            $sql = "INSERT INTO clients (barcode, first_name, last_name, email, phone, promo_id, section_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+
+            for ($i = 0; $i < 10; $i++) {
+                $first_name = $first_names[$i];
+                $last_name = $last_names[$i];
+                // Assurer un email unique
+                $email = strtolower($first_name . '.' . $last_name . rand(10, 99)) . '@example.com';
+                $phone = '06' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+                // Assurer un barcode unique
+                $barcode = 'C' . str_pad($i + 1, 4, '0', STR_PAD_LEFT) . uniqid();
+                $promo_id = $promo_ids[array_rand($promo_ids)];
+                $section_id = $section_ids[array_rand($section_ids)];
+
+                $stmt->execute([$barcode, $first_name, $last_name, $email, $phone, $promo_id, $section_id]);
+            }
+        }
     }
 }
