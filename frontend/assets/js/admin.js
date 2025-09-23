@@ -38,10 +38,12 @@ const admin = (() => {
     }
 
     function handleAdminNav(e) {
-        e.preventDefault();
-        const targetSection = e.target.dataset.target;
-        history.pushState(null, '', `#admin/${targetSection}`);
-        showAdminSection(targetSection);
+        // Au lieu de gérer manuellement l'état, on met simplement à jour le hash.
+        // Le listener 'hashchange' s'occupera du reste.
+        const newHash = e.currentTarget.hash;
+        if (window.location.hash !== newHash) {
+            window.location.hash = newHash;
+        }
     }
 
     function showAdminSection(targetId) {
