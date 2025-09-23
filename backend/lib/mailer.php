@@ -28,7 +28,7 @@ class SimulatedMailer
         $this->Password = $config['MAIL_PASSWORD'] ?? '';
         $this->SMTPSecure = $config['MAIL_ENCRYPTION'] ?? 'tls';
         $this->fromAddress = $config['MAIL_FROM_ADDRESS'] ?? 'noreply@example.com';
-        $this->fromName = $config['MAIL_FROM_NAME'] ?? 'inouttracker';
+        $this->fromName = $config['MAIL_FROM_NAME'] ?? 'InOutTracker';
         $this->SMTPAuth = true;
     }
 

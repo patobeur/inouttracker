@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Attendre que l'authentification soit vérifiée
 				await auth.waitForAuth();
 				if (!auth.isUserAdmin()) {
-					console.warn("Tentative d'accès non autorisé à la page admin.");
+					// console.warn("Tentative d'accès non autorisé à la page admin.");
 					window.location.hash = "home"; // Redirection
 					return; // Arrêter le traitement pour cette route
 				}

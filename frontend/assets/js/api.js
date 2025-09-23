@@ -1,6 +1,5 @@
 const api = (() => {
 	const BASE_URL = "api/index.php";
-	const Log_ON = false;
 	let csrfToken = null;
 
 	async function fetchCsrfToken() {
@@ -12,9 +11,7 @@ const api = (() => {
 			csrfToken = data.csrf_token;
 			return csrfToken;
 		} catch (error) {
-			if (Log_ON) {
-				console.error("API Error:", error);
-			}
+			console.error("API Error:", error);
 			return null;
 		}
 	}
@@ -73,9 +70,7 @@ const api = (() => {
 
 			return responseData;
 		} catch (error) {
-			if (Log_ON) {
-				console.error(`API request failed for action: ${action}`, error);
-			}
+			// console.error(`API request failed for action: ${action}`, error);
 			// Propage l'erreur pour une gestion plus fine dans l'UI
 			throw error;
 		}
