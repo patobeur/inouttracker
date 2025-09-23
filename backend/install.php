@@ -5,11 +5,13 @@
  * ce fichier devra etre effacer par l'utilisateur apres installation
  *
  * @param PDO $pdo L'objet de connexion PDO.
+ * @return bool Vrai si l'installation a réussi, faux sinon.
  */
-function create_tables_if_not_exists(PDO $pdo)
+function run_installation(PDO $pdo): bool
 {
-    // Détecter le type de driver pour adapter les types de données
-    $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+    try {
+        // Détecter le type de driver pour adapter les types de données
+        $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     $id = $driver === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
     // Définitions de schémas SQL
     $users_sql = "
@@ -286,5 +288,11 @@ function create_tables_if_not_exists(PDO $pdo)
                 $stmt->execute([$barcode, $first_name, $last_name, $email, $phone, $promo_id, $section_id]);
             }
         }
+    }
+        return true;
+    } catch (PDOException $e) {
+        // En cas d'erreur, on peut logger l'erreur pour le débogage
+        error_log("Erreur lors de l'installation de la base de données : " . $e->getMessage());
+        return false;
     }
 }

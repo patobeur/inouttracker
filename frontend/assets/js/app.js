@@ -96,6 +96,39 @@ document.addEventListener("DOMContentLoaded", () => {
 			auth.init(this);
 			profile.init(this);
 			admin.init(this);
+
+		// Gestionnaire pour le bouton d'installation
+		document.getElementById("install-btn").addEventListener("click", this.handleInstall.bind(this));
+	},
+
+	// Gère l'appel API pour l'installation
+	async handleInstall() {
+		const errorDiv = document.getElementById("install-error");
+		const notificationDiv = document.getElementById("system-notification");
+		errorDiv.textContent = "";
+
+		try {
+			// On utilise api.post mais sans body, car l'action elle-même est la requête
+			const data = await api.post("install", {});
+
+			if (data.success) {
+				// Afficher le message de succès
+				notificationDiv.textContent = data.message;
+				notificationDiv.className = "notification success";
+				notificationDiv.style.display = "block";
+
+				// Cacher la page d'installation
+				document.getElementById("install-page").style.display = "none";
+
+				// Optionnel: recharger la page après un court délai pour que l'utilisateur voie le message
+				setTimeout(() => window.location.reload(), 4000);
+			} else {
+				// Cette condition ne devrait pas être atteinte car api.post lève une exception en cas d'erreur
+				errorDiv.textContent = data.message || "Une erreur inattendue est survenue.";
+			}
+		} catch (error) {
+			errorDiv.textContent = error.error || "Une erreur critique est survenue lors de l'installation.";
+		}
 		},
 	};
 

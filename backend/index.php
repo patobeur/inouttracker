@@ -103,13 +103,34 @@ switch ($action) {
             send_error_response($result['message'], 400);
         }
         break;
+
+    case 'install':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            send_error_response('Méthode non autorisée', 405);
+        }
+
+        $install_file = __DIR__ . '/install.php';
+        if (file_exists($install_file)) {
+            require_once $install_file;
+            if (run_installation($pdo)) {
+                send_json_response([
+                    'success' => true,
+                    'message' => "La base de données a été installée avec succès. N'oubliez pas de supprimer le fichier install.php !"
+                ]);
+            } else {
+                send_error_response("L'installation a échoué. Vérifiez les logs du serveur pour plus de détails.", 500);
+            }
+        } else {
+            send_error_response("Le fichier d'installation n'a pas été trouvé ou l'application est déjà installée.", 404);
+        }
+        break;
 }
 
 // Routes qui nécessitent une authentification
 if (!is_user_logged_in()) {
     // Si l'action n'est pas une action publique, et que l'utilisateur n'est pas connecté,
     // on renvoie une erreur 401, sauf si une réponse a déjà été envoyée.
-    $public_actions = ['register', 'login', 'get_csrf_token', 'request_reset', 'confirm_reset'];
+    $public_actions = ['register', 'login', 'get_csrf_token', 'request_reset', 'confirm_reset', 'install'];
     if ($action !== '' && !in_array($action, $public_actions)) {
          send_error_response('Authentification requise.', 401);
     } else if ($action === '') {

@@ -389,3 +389,21 @@ button:hover,
 	padding: 5px 0;
 	border-bottom: 1px solid #eee;
 }
+
+/* Style pour les notifications système */
+.notification {
+	padding: 15px;
+	margin-bottom: 20px;
+	border-radius: var(--border-radius);
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+.notification.success {
+	background-color: #28a745;
+}
+
+.notification.error {
+	background-color: var(--color-error);
+}

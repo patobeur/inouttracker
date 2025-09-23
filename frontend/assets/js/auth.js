@@ -47,8 +47,10 @@ const auth = (() => {
 				api.setCsrfToken(data.csrf_token);
 			}
 		} catch (error) {
-			// L'erreur 401 est attendue si non connecté.
-			if (error.status !== 401) {
+			// Si l'erreur est "Service temporairement indisponible", on suppose que l'installation est nécessaire
+			if (error && error.error === 'Service temporairement indisponible.') {
+				app.showPage('install-page');
+			} else if (error.status !== 401) { // L'erreur 401 est normale si non connecté
 				if (CONSOLE_ON) {
 					console.error(
 						"Erreur lors de la vérification du statut d'authentification",
