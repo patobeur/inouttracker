@@ -174,22 +174,63 @@ button:hover, .button:hover {
     font-weight: bold;
 }
 
+.nav-toggle {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.nav-toggle span {
+	display: block;
+	width: 25px;
+	height: 2px;
+	background-color: var(--color-text);
+	margin: 5px auto;
+	transition: all 0.3s ease-in-out;
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .nav-links {
-        /* Simple version pour mobile: à améliorer avec un menu burger si besoin */
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background-color: var(--color-surface);
-        display: none; /* Cacher par défaut */
-    }
+	.nav-toggle {
+		display: block;
+		z-index: 1001; /* Ensure it's clickable */
+	}
 
-    #app-root {
-        padding: 1rem;
-    }
+	.nav-links {
+		display: none; /* Hidden by default on mobile */
+		flex-direction: column;
+		position: absolute;
+		top: 60px; /* Height of the navbar */
+		left: 0;
+		width: 100%;
+		background-color: var(--color-surface);
+		box-shadow: var(--box-shadow);
+	}
+
+	.nav-links.active {
+		display: flex; /* Show menu when active */
+	}
+
+	.nav-links li {
+		margin-left: 0;
+		width: 100%;
+		text-align: center;
+	}
+
+	.nav-link {
+		display: block;
+		padding: 1rem;
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.nav-links li:last-child .nav-link {
+		border-bottom: none;
+	}
+
+	#app-root {
+		padding: 1rem;
+	}
 }
 
 /* --- Admin Panel --- */
