@@ -58,11 +58,53 @@ function create_tables_if_not_exists(PDO $pdo)
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );";
 
+    $clients_sql = "
+    CREATE TABLE IF NOT EXISTS clients (
+        id " . $id . ",
+        barcode VARCHAR(255) NOT NULL UNIQUE,
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
+        email VARCHAR(255),
+        phone VARCHAR(50),
+        status VARCHAR(20) NOT NULL DEFAULT 'active',
+        invalidated_at DATETIME,
+        invalidated_reason TEXT,
+        deleted_at DATETIME,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );";
+
+    $articles_sql = "
+    CREATE TABLE IF NOT EXISTS articles (
+        id " . $id . ",
+        barcode VARCHAR(255) NOT NULL UNIQUE,
+        name VARCHAR(255) NOT NULL,
+        category VARCHAR(100),
+        `condition` VARCHAR(100),
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );";
+
+    $movements_sql = "
+    CREATE TABLE IF NOT EXISTS movements (
+        id " . $id . ",
+        article_id INT NOT NULL,
+        client_id INT,
+        type VARCHAR(4) NOT NULL,
+        occurred_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        note TEXT,
+        FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+        FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    );";
+
     // Exécuter les créations de table
     $pdo->exec($users_sql);
     $pdo->exec($badges_sql);
     $pdo->exec($user_badges_sql);
     $pdo->exec($sondages_sql);
+    $pdo->exec($clients_sql);
+    $pdo->exec($articles_sql);
+    $pdo->exec($movements_sql);
 
     // Vérifier si la table des utilisateurs est vide
     $stmt = $pdo->query("SELECT COUNT(*) FROM users");
@@ -81,5 +123,52 @@ function create_tables_if_not_exists(PDO $pdo)
         $insert_admin_sql = "INSERT INTO users (email, pseudo, first_name, last_name, password_hash, is_admin) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($insert_admin_sql);
         $stmt->execute([$admin_email, $admin_pseudo, $admin_first_name, $admin_last_name, $admin_password_hash, $is_admin]);
+    }
+
+    // Ajout des index pour les nouvelles tables
+    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_clients_search ON clients (last_name, first_name, email, phone);");
+    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_article_time ON movements (article_id, occurred_at);");
+    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_client_time ON movements (client_id, occurred_at);");
+    // $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_type_time ON movements (type, occurred_at);");
+
+
+    if ($driver === 'sqlite') {
+        // Ajout des index (SQLite supporte IF NOT EXISTS)
+        $pdo->exec("CREATE INDEX IF NOT EXISTS idx_clients_search ON clients (last_name, first_name, email, phone);");
+        $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_article_time ON movements (article_id, occurred_at);");
+        $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_client_time ON movements (client_id, occurred_at);");
+        $pdo->exec("CREATE INDEX IF NOT EXISTS idx_movements_type_time ON movements (type, occurred_at);");
+    } else { // MySQL (pas de IF NOT EXISTS sur CREATE INDEX)
+        /**
+         * Crée un index s'il n'existe pas déjà (MySQL).
+         * @param PDO    $pdo
+         * @param string $table       Nom de la table
+         * @param string $indexName   Nom de l'index
+         * @param string $columnsList Liste des colonnes de l'index, telle que "col1, col2"
+         */
+        $createIndexIfMissing = function (PDO $pdo, string $table, string $indexName, string $columnsList) {
+            // Vérifier l'existence de l'index dans le schéma courant
+            $sql = "SELECT 1
+                    FROM information_schema.statistics
+                    WHERE table_schema = DATABASE()
+                    AND table_name = :table
+                    AND index_name = :idx
+                    LIMIT 1";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':table' => $table, ':idx' => $indexName]);
+            $exists = (bool) $stmt->fetchColumn();
+
+            if (!$exists) {
+                // Créer l'index
+                // ⚠️ suppose que $table, $indexName et $columnsList sont sûrs (noms constants du code)
+                $pdo->exec("CREATE INDEX `$indexName` ON `$table` ($columnsList);");
+            }
+        };
+
+        // Ajout des index (MySQL)
+        $createIndexIfMissing($pdo, 'clients',   'idx_clients_search',           'last_name, first_name, email, phone');
+        $createIndexIfMissing($pdo, 'movements', 'idx_movements_article_time',   'article_id, occurred_at');
+        $createIndexIfMissing($pdo, 'movements', 'idx_movements_client_time',    'client_id, occurred_at');
+        $createIndexIfMissing($pdo, 'movements', 'idx_movements_type_time',      '`type`, occurred_at'); // `type` est un mot réservé, mieux l’échapper
     }
 }
