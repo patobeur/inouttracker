@@ -1,0 +1,845 @@
+{
+  "category": "ia",
+  "questions": [
+    {
+      "question": "Quel modèle de langage est développé par Google ?",
+      "options": [
+        {
+          "text": "ChatGPT",
+          "isCorrect": false
+        },
+        {
+          "text": "Gemini",
+          "isCorrect": true
+        },
+        {
+          "text": "Llama",
+          "isCorrect": false
+        },
+        {
+          "text": "DeepSeek",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Gemini est le grand modèle de langage développé par Google.",
+      "mauvaise_reponse": "ChatGPT est développé par OpenAI, Llama par Meta et DeepSeek par DeepSeek. Google a développé Gemini pour concurrencer ces modèles."
+    },
+    {
+      "question": "Quelle entreprise est derrière le modèle de langage ChatGPT ?",
+      "options": [
+        {
+          "text": "Google",
+          "isCorrect": false
+        },
+        {
+          "text": "OpenAI",
+          "isCorrect": true
+        },
+        {
+          "text": "Microsoft",
+          "isCorrect": false
+        },
+        {
+          "text": "DeepMind",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "C'est OpenAI qui est à l'origine de ChatGPT.",
+      "mauvaise_reponse": "OpenAI est l'entreprise qui a créé ChatGPT, bien que Microsoft soit un partenaire financier et technologique majeur."
+    },
+    {
+      "question": "Lequel de ces modèles est connu pour son approche \"open source\" ?",
+      "options": [
+        {
+          "text": "Gemini",
+          "isCorrect": false
+        },
+        {
+          "text": "GPT-4",
+          "isCorrect": false
+        },
+        {
+          "text": "Llama",
+          "isCorrect": true
+        },
+        {
+          "text": "Gemini",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Llama, développé par Meta, est un modèle open source.",
+      "mauvaise_reponse": "Gemini et GPT-4 sont des modèles propriétaires, contrairement à Llama développé par Meta qui est un modèle largement utilisé dans le monde de l'open source."
+    },
+    {
+      "question": "Quel terme est utilisé pour un grand modèle de langage (LLM) qui produit des informations incorrectes ou inventées ?",
+      "options": [
+        {
+          "text": "Biais",
+          "isCorrect": false
+        },
+        {
+          "text": "Hallucination",
+          "isCorrect": true
+        },
+        {
+          "text": "Déformation cognitive",
+          "isCorrect": false
+        },
+        {
+          "text": "Surapprentissage",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "On parle d'hallucination lorsque le modèle produit des informations fausses.",
+      "mauvaise_reponse": "L'hallucination est la production d'informations fausses par l'IA. Le biais, lui, est une inclinaison du modèle basée sur les données d'entraînement."
+    },
+    {
+      "question": "Quel est le rôle du \"prompt\" dans l'utilisation d'un grand modèle de langage ?",
+      "options": [
+        {
+          "text": "C'est le code source du modèle.",
+          "isCorrect": false
+        },
+        {
+          "text": "C'est la réponse générée par l'IA.",
+          "isCorrect": false
+        },
+        {
+          "text": "C'est l'instruction ou la question donnée à l'IA.",
+          "isCorrect": true
+        },
+        {
+          "text": "C'est le nom de l'algorithme d'entraînement.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Le prompt est l'instruction initiale donnée à l'IA pour la guider.",
+      "mauvaise_reponse": "Le prompt est l'entrée de l'utilisateur qui guide le modèle. C'est l'équivalent de la question que l'on pose à l'IA."
+    },
+    {
+      "question": "Quel concept décrit la capacité d'une IA à générer des textes, images ou sons originaux ?",
+      "options": [
+        {
+          "text": "IA analytique",
+          "isCorrect": false
+        },
+        {
+          "text": "IA générative",
+          "isCorrect": true
+        },
+        {
+          "text": "IA prédictive",
+          "isCorrect": false
+        },
+        {
+          "text": "IA spécialisée",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA générative est le champ de l'IA qui se concentre sur la création de contenu.",
+      "mauvaise_reponse": "L'IA générative est celle qui peut créer du nouveau contenu, comme les textes, images ou sons. L'IA prédictive, elle, est utilisée pour les prévisions."
+    },
+    {
+      "question": "Quel secteur d'activité utilise l'IA pour l'analyse prédictive et la détection de fraudes ?",
+      "options": [
+        {
+          "text": "Le marketing",
+          "isCorrect": false
+        },
+        {
+          "text": "La santé",
+          "isCorrect": false
+        },
+        {
+          "text": "La finance",
+          "isCorrect": true
+        },
+        {
+          "text": "L'éducation",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "C'est la finance qui utilise l'IA pour la détection de fraudes.",
+      "mauvaise_reponse": "C'est le secteur de la finance qui utilise l'IA pour détecter les transactions frauduleuses et faire des prévisions de marché. "
+    },
+    {
+      "question": "L'éthique de l'IA concerne principalement :",
+      "options": [
+        {
+          "text": "La vitesse de traitement des données",
+          "isCorrect": false
+        },
+        {
+          "text": "Les biais dans les algorithmes et la confidentialité des données",
+          "isCorrect": true
+        },
+        {
+          "text": "Le coût d'accès aux modèles",
+          "isCorrect": false
+        },
+        {
+          "text": "La capacité à générer des images réalistes",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'éthique de l'IA se concentre sur les enjeux sociaux et moraux des algorithmes.",
+      "mauvaise_reponse": "L'éthique de l'IA se concentre sur les implications morales et sociales, comme le respect de la vie privée et l'élimination des biais dans les algorithmes."
+    },
+    {
+      "question": "Quel est l'impact potentiel de l'IA sur l'évolution de certains métiers dans les 5 à 10 prochaines années ?",
+      "options": [
+        {
+          "text": "L'automatisation complète de tous les métiers.",
+          "isCorrect": false
+        },
+        {
+          "text": "La disparition totale de certains métiers et la création de nouveaux.",
+          "isCorrect": true
+        },
+        {
+          "text": "Aucun impact significatif, l'IA restera une niche technologique.",
+          "isCorrect": false
+        },
+        {
+          "text": "L'IA deviendra une simple application mobile pour le grand public.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA transforme le marché du travail en automatisant certaines tâches et en créant de nouveaux métiers.",
+      "mauvaise_reponse": "L'IA ne remplacera probablement pas tous les métiers, mais elle en transformera certains et en créera de nouveaux, notamment dans la maintenance et le développement des IA."
+    },
+    {
+      "question": "Quelle technologie a permis de faire un bond en avant dans le développement des grands modèles de langage, dont le \"T\" de \"GPT\" est inspiré ?",
+      "options": [
+        {
+          "text": "Le Big Data",
+          "isCorrect": false
+        },
+        {
+          "text": "Le Transformer",
+          "isCorrect": true
+        },
+        {
+          "text": "Le Web Sémantique",
+          "isCorrect": false
+        },
+        {
+          "text": "Le Blockchain",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Le 'T' dans GPT signifie Transformer, l'architecture qui a révolutionné l'IA générative.",
+      "mauvaise_reponse": "Le 'T' dans l'acronyme GPT signifie 'Transformer', l'architecture de réseau neuronal qui a révolutionné le traitement du langage naturel."
+    },
+    {
+      "question": "Comment les entreprises comme Google intègrent-elles leurs modèles d'IA (Gemini) dans leurs produits existants ?",
+      "options": [
+        {
+          "text": "En créant de nouvelles applications uniquement pour l'IA.",
+          "isCorrect": false
+        },
+        {
+          "text": "En utilisant l'IA pour améliorer les fonctionnalités de leurs produits existants (ex : Search, Docs).",
+          "isCorrect": true
+        },
+        {
+          "text": "En vendant des licences logicielles à d'autres entreprises.",
+          "isCorrect": false
+        },
+        {
+          "text": "En développant une nouvelle architecture pour l'IA.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA est intégrée aux produits existants pour les rendre plus intelligents et performants.",
+      "mauvaise_reponse": "L'intégration se fait en ajoutant des fonctionnalités basées sur l'IA aux produits existants pour les rendre plus puissants et intuitifs."
+    },
+    {
+      "question": "Qu'est-ce que l'apprentissage par renforcement (Reinforcement Learning) ?",
+      "options": [
+        {
+          "text": "Une méthode d'entraînement où l'IA apprend en observant des humains.",
+          "isCorrect": false
+        },
+        {
+          "text": "Une méthode d'entraînement où l'IA apprend à partir de récompenses et de pénalités.",
+          "isCorrect": true
+        },
+        {
+          "text": "Une méthode d'entraînement où l'IA copie les données sans les analyser.",
+          "isCorrect": false
+        },
+        {
+          "text": "Une méthode d'entraînement basée sur des jeux de données structurées.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Le 'Reinforcement Learning' est une méthode d'apprentissage par essai et erreur.",
+      "mauvaise_reponse": "L'apprentissage par renforcement est un type de machine learning où l'agent apprend à prendre des décisions en interagissant avec son environnement pour maximiser une 'récompense'."
+    },
+    {
+      "question": "Quel est le principal avantage d'une IA spécialisée par rapport à une IA généraliste ?",
+      "options": [
+        {
+          "text": "Elle est plus flexible et peut s'adapter à toutes les tâches.",
+          "isCorrect": false
+        },
+        {
+          "text": "Elle peut traiter un plus grand volume de données.",
+          "isCorrect": false
+        },
+        {
+          "text": "Elle est plus performante et précise sur sa tâche spécifique.",
+          "isCorrect": true
+        },
+        {
+          "text": "Elle nécessite moins de puissance de calcul.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Une IA spécialisée est très efficace pour une seule tâche.",
+      "mauvaise_reponse": "Une IA spécialisée est conçue pour une tâche unique, ce qui lui permet d'atteindre une performance et une précision supérieures sur ce domaine précis."
+    },
+    {
+      "question": "Comment les modèles d'IA comme OpenAI sont-ils entraînés sur de vastes quantités de données textuelles ?",
+      "options": [
+        {
+          "text": "Manuellement, par des équipes d'experts.",
+          "isCorrect": false
+        },
+        {
+          "text": "En les nourrissant de données non structurées provenant d'Internet et d'autres sources.",
+          "isCorrect": true
+        },
+        {
+          "text": "En utilisant uniquement des données structurées.",
+          "isCorrect": false
+        },
+        {
+          "text": "En les programmant ligne par ligne.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Les modèles sont entraînés sur d'énormes quantités de données non structurées, comme des articles de blog ou des livres.",
+      "mauvaise_reponse": "Les grands modèles de langage sont entraînés sur d'énormes ensembles de données textuelles non structurées (livres, articles, sites web) pour apprendre la grammaire, la syntaxe et la sémantique."
+    },
+    {
+      "question": "Quel rôle joue l'éthique dans la conception et l'utilisation des IA comme DeepSeek ?",
+      "options": [
+        {
+          "text": "Aucun rôle, car l'IA est une technologie neutre.",
+          "isCorrect": false
+        },
+        {
+          "text": "Elle garantit que l'IA respecte la vie privée, évite les biais et soit transparente dans ses décisions.",
+          "isCorrect": true
+        },
+        {
+          "text": "Elle permet de rendre l'IA plus rapide.",
+          "isCorrect": false
+        },
+        {
+          "text": "Elle se concentre uniquement sur la sécurité des données.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'éthique est indispensable pour une IA responsable et juste.",
+      "mauvaise_reponse": "L'éthique de l'IA est essentielle pour éviter les biais, assurer l'équité et la transparence, et protéger la vie privée des utilisateurs."
+    },
+    {
+      "question": "Citez un exemple d'utilisation de l'IA générative pour le développement de logiciels.",
+      "options": [
+        {
+          "text": "L'utilisation d'IA pour l'analyse des stocks.",
+          "isCorrect": false
+        },
+        {
+          "text": "La génération de code source par des modèles comme GitHub Copilot.",
+          "isCorrect": true
+        },
+        {
+          "text": "La détection de menaces de sécurité.",
+          "isCorrect": false
+        },
+        {
+          "text": "La surveillance des performances du réseau.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA générative peut créer du code pour aider les développeurs à coder plus vite.",
+      "mauvaise_reponse": "Les modèles d'IA générative comme Copilot peuvent aider les développeurs à écrire du code plus rapidement en suggérant des lignes ou des blocs entiers."
+    },
+    {
+      "question": "Quel est le principe du \"fine-tuning\" (ajustement fin) d'un modèle de langage ?",
+      "options": [
+        {
+          "text": "Entraîner le modèle à partir de zéro avec un petit ensemble de données.",
+          "isCorrect": false
+        },
+        {
+          "text": "Ajuster un modèle pré-entraîné avec un petit ensemble de données spécifiques pour une tâche donnée.",
+          "isCorrect": true
+        },
+        {
+          "text": "Réduire la taille du modèle pour le rendre plus rapide.",
+          "isCorrect": false
+        },
+        {
+          "text": "Ajouter de nouvelles fonctionnalités au modèle existant.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Le 'fine-tuning' adapte un modèle existant à un besoin précis.",
+      "mauvaise_reponse": "Le fine-tuning permet d'adapter un modèle généraliste (déjà entraîné) à une tâche spécifique, ce qui est beaucoup plus efficace que de le former à partir de zéro."
+    },
+    {
+      "question": "Quelle est la principale différence entre un modèle d'IA généraliste (comme Gemini) et un modèle spécialisé ?",
+      "options": [
+        {
+          "text": "Le modèle généraliste est plus performant sur une tâche précise.",
+          "isCorrect": false
+        },
+        {
+          "text": "Le modèle généraliste peut effectuer une grande variété de tâches différentes.",
+          "isCorrect": true
+        },
+        {
+          "text": "Le modèle spécialisé est plus lent.",
+          "isCorrect": false
+        },
+        {
+          "text": "Le modèle spécialisé a besoin de beaucoup plus de données d'entraînement.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Un modèle généraliste peut faire plusieurs tâches, contrairement à un modèle spécialisé.",
+      "mauvaise_reponse": "Un modèle généraliste, comme Gemini, est conçu pour être polyvalent, tandis qu'un modèle spécialisé se concentre sur une seule tâche (ex : détection de cancer)."
+    },
+    {
+      "question": "Comment peut-on évaluer la performance d'un grand modèle de langage (LLM) ?",
+      "options": [
+        {
+          "text": "En mesurant sa capacité à répondre à des questions sur des jeux de données de référence.",
+          "isCorrect": true
+        },
+        {
+          "text": "En comptant le nombre de lignes de code qu'il contient.",
+          "isCorrect": false
+        },
+        {
+          "text": "En le comparant à la vitesse de son prédécesseur.",
+          "isCorrect": false
+        },
+        {
+          "text": "En vérifiant la taille de la base de données qu'il a traitée.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "La performance d'un LLM est mesurée par son efficacité sur des jeux de données d'évaluation standardisés.",
+      "mauvaise_reponse": "L'évaluation de la performance d'un LLM se fait à travers des benchmarks et des jeux de données standardisés, qui mesurent sa capacité à accomplir des tâches variées de manière efficace et précise."
+    },
+    {
+      "question": "Que signifie le \"T\" de \"GPT\" ?",
+      "options": [
+        {
+          "text": "Technologie",
+          "isCorrect": false
+        },
+        {
+          "text": "Tutoriel",
+          "isCorrect": false
+        },
+        {
+          "text": "Transformer",
+          "isCorrect": true
+        },
+        {
+          "text": "Traitement",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Le 'T' signifie 'Transformer', le 'G' 'Génératif' et le 'P' 'Pré-entraîné'.",
+      "mauvaise_reponse": "Le 'T' signifie 'Transformer', l'architecture de réseau neuronal qui a révolutionné le traitement du langage naturel."
+    },
+    {
+      "question": "Laquelle de ces applications n'utilise pas l'IA générative ?",
+      "options": [
+        {
+          "text": "La création d'images à partir de texte.",
+          "isCorrect": false
+        },
+        {
+          "text": "La détection de visages sur une photo.",
+          "isCorrect": true
+        },
+        {
+          "text": "La composition de musique originale.",
+          "isCorrect": false
+        },
+        {
+          "text": "La génération de résumés d'articles.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "La détection de visage n'est pas de l'IA générative mais de la reconnaissance d'image.",
+      "mauvaise_reponse": "La détection de visage est une tâche d'IA analytique (reconnaissance d'images) et non de création de contenu."
+    },
+    {
+      "question": "Quelle est l'une des principales préoccupations éthiques concernant l'utilisation de l'IA ?",
+      "options": [
+        {
+          "text": "Le coût de l'électricité.",
+          "isCorrect": false
+        },
+        {
+          "text": "Les emplois perdus et les biais algorithmiques.",
+          "isCorrect": true
+        },
+        {
+          "text": "La lenteur des serveurs.",
+          "isCorrect": false
+        },
+        {
+          "text": "La taille des bases de données utilisées.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "La question de l'emploi et des biais est au cœur des débats éthiques sur l'IA.",
+      "mauvaise_reponse": "La perte d'emploi due à l'automatisation et les biais qui peuvent discriminer les utilisateurs sont des enjeux éthiques majeurs."
+    },
+    {
+      "question": "Quelle entreprise a récemment développé le modèle d'IA \"DeepSeek\" ?",
+      "options": [
+        {
+          "text": "OpenAI",
+          "isCorrect": false
+        },
+        {
+          "text": "Google",
+          "isCorrect": false
+        },
+        {
+          "text": "Meta",
+          "isCorrect": false
+        },
+        {
+          "text": "DeepSeek",
+          "isCorrect": true
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "DeepSeek a été développé par une équipe de recherche du même nom.",
+      "mauvaise_reponse": "Le modèle DeepSeek a été développé par une équipe de recherche du même nom, se concentrant sur les modèles open-source."
+    },
+    {
+      "question": "Quel est le but principal de l'IA dans l'éducation ?",
+      "options": [
+        {
+          "text": "Remplacer les enseignants.",
+          "isCorrect": false
+        },
+        {
+          "text": "Améliorer l'apprentissage et l'efficacité des cours.",
+          "isCorrect": true
+        },
+        {
+          "text": "Créer des cours sans supervision.",
+          "isCorrect": false
+        },
+        {
+          "text": "Automatiser la prise de décision des étudiants.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA est un outil pour soutenir et améliorer l'enseignement, et non pour le remplacer.",
+      "mauvaise_reponse": "L'IA est un outil pour assister les enseignants, personnaliser l'apprentissage et optimiser la création de contenu, non pour remplacer l'interaction humaine."
+    },
+    {
+      "question": "Quel modèle d'IA a été entraîné spécifiquement pour la programmation informatique ?",
+      "options": [
+        {
+          "text": "DALL-E",
+          "isCorrect": false
+        },
+        {
+          "text": "Midjourney",
+          "isCorrect": false
+        },
+        {
+          "text": "AlphaCode",
+          "isCorrect": true
+        },
+        {
+          "text": "Gemini",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "AlphaCode est un modèle d'IA conçu spécifiquement pour la programmation.",
+      "mauvaise_reponse": "DALL-E et Midjourney sont pour la génération d'images. AlphaCode est un modèle de DeepMind spécifiquement conçu pour la programmation."
+    },
+    {
+      "question": "Comment l'IA peut-elle aider à la personnalisation de l'expérience client ?",
+      "options": [
+        {
+          "text": "En augmentant la vitesse du site web.",
+          "isCorrect": false
+        },
+        {
+          "text": "En analysant le comportement des utilisateurs pour recommander des produits ou services pertinents.",
+          "isCorrect": true
+        },
+        {
+          "text": "En automatisant les réponses par e-mail sans analyse des besoins.",
+          "isCorrect": false
+        },
+        {
+          "text": "En réduisant le temps de chargement des pages.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA personnalise les recommandations en analysant les préférences des utilisateurs.",
+      "mauvaise_reponse": "Les moteurs de recommandation basés sur l'IA analysent les données des utilisateurs pour leur proposer des contenus ou des produits qui correspondent à leurs préférences."
+    },
+    {
+      "question": "Quel est un exemple de biais dans les algorithmes d'IA ?",
+      "options": [
+        {
+          "text": "Un modèle qui est entraîné avec un jeu de données non représentatif de la population.",
+          "isCorrect": true
+        },
+        {
+          "text": "Un modèle qui donne la même réponse à toutes les questions.",
+          "isCorrect": false
+        },
+        {
+          "text": "Un modèle qui est trop lent à générer une réponse.",
+          "isCorrect": false
+        },
+        {
+          "text": "Un modèle qui ne comprend pas la grammaire.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Les biais surviennent lorsque les données d'entraînement ne sont pas diversifiées.",
+      "mauvaise_reponse": "Un biais se produit lorsque le modèle reproduit des préjugés présents dans les données d'entraînement, ce qui peut entraîner des résultats discriminatoires ou inexacts."
+    },
+    {
+      "question": "Quel est le but de l'IA prédictive ?",
+      "options": [
+        {
+          "text": "Créer de nouvelles images.",
+          "isCorrect": false
+        },
+        {
+          "text": "Analyser des données passées pour faire des prévisions sur des événements futurs.",
+          "isCorrect": true
+        },
+        {
+          "text": "Générer du code pour les développeurs.",
+          "isCorrect": false
+        },
+        {
+          "text": "Répondre à des questions en temps réel.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA prédictive utilise l'analyse de données pour prévoir des événements futurs.",
+      "mauvaise_reponse": "L'IA prédictive utilise des modèles statistiques et des données historiques pour anticiper des événements comme les ventes futures ou les tendances du marché."
+    },
+    {
+      "question": "Comment l'IA est-elle utilisée dans l'industrie automobile ?",
+      "options": [
+        {
+          "text": "Pour la conception de carrosseries.",
+          "isCorrect": false
+        },
+        {
+          "text": "Pour les systèmes de conduite autonome et l'aide à la conduite.",
+          "isCorrect": true
+        },
+        {
+          "text": "Pour l'assemblage manuel des pièces.",
+          "isCorrect": false
+        },
+        {
+          "text": "Pour le design des sièges.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA est un élément clé de la conduite autonome.",
+      "mauvaise_reponse": "L'IA est essentielle dans l'automobile pour les fonctionnalités avancées comme la conduite autonome, la détection des obstacles et l'aide au stationnement."
+    },
+    {
+      "question": "Quel est le rôle de l'IA dans la cybersécurité ?",
+      "options": [
+        {
+          "text": "De créer de nouveaux virus.",
+          "isCorrect": false
+        },
+        {
+          "text": "De détecter les menaces et les activités suspectes en temps réel.",
+          "isCorrect": true
+        },
+        {
+          "text": "De stocker des données sensibles.",
+          "isCorrect": false
+        },
+        {
+          "text": "De crypter des fichiers.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA peut analyser de grands volumes de données pour identifier les activités malveillantes.",
+      "mauvaise_reponse": "En cybersécurité, l'IA est utilisée pour analyser de vastes quantités de données afin d'identifier des schémas d'attaques et de détecter des menaces potentielles plus rapidement que les méthodes traditionnelles."
+    },
+    {
+      "question": "Quelles sont les opportunités et les risques liés à l'intégration de l'IA dans les processus de prise de décision en entreprise ?",
+      "options": [
+        {
+          "text": "L'IA rend les décisions plus lentes mais plus justes.",
+          "isCorrect": false
+        },
+        {
+          "text": "L'IA permet des décisions plus rapides et informées, mais présente un risque de dépendance et de biais.",
+          "isCorrect": true
+        },
+        {
+          "text": "L'IA n'a pas d'impact sur la prise de décision en entreprise.",
+          "isCorrect": false
+        },
+        {
+          "text": "L'IA rend les décisions plus lentes et plus complexes.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA améliore la vitesse et la qualité des décisions, mais peut créer une dépendance et reproduire des biais.",
+      "mauvaise_reponse": "L'IA accélère la prise de décision en analysant les données, mais il faut être vigilant quant aux biais et à une dépendance excessive à la technologie."
+    },
+    {
+      "question": "Comparez l'approche d'OpenAI et de DeepMind (via Gemini) en matière de recherche sur l'IA.",
+      "options": [
+        {
+          "text": "OpenAI se concentre sur les modèles de langage et DeepMind sur les jeux vidéo.",
+          "isCorrect": false
+        },
+        {
+          "text": "OpenAI se concentre sur la recherche pour le grand public, tandis que DeepMind se spécialise dans l'IA scientifique et la résolution de problèmes complexes.",
+          "isCorrect": true
+        },
+        {
+          "text": "OpenAI se concentre sur l'IA éthique et DeepMind sur l'IA de défense.",
+          "isCorrect": false
+        },
+        {
+          "text": "Les deux entreprises ont exactement la même approche et les mêmes objectifs.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "OpenAI se spécialise dans l'IA généraliste pour le grand public, tandis que DeepMind se concentre sur la recherche fondamentale et la résolution de problèmes scientifiques.",
+      "mauvaise_reponse": "Bien que les deux entreprises travaillent sur des LLM, OpenAI a mis l'accent sur l'accessibilité au grand public, tandis que DeepMind est plus connu pour sa recherche fondamentale et ses avancées scientifiques."
+    },
+    {
+      "question": "Quel est l'impact de l'IA sur l'évolution de la chaîne de production ?",
+      "options": [
+        {
+          "text": "Elle permet de remplacer entièrement les usines par des robots.",
+          "isCorrect": false
+        },
+        {
+          "text": "Elle permet d'optimiser les processus de fabrication, de prédire les pannes et d'améliorer le contrôle qualité.",
+          "isCorrect": true
+        },
+        {
+          "text": "Elle ne s'applique pas aux usines, mais uniquement aux logiciels.",
+          "isCorrect": false
+        },
+        {
+          "text": "Elle ralentit la production en raison de la complexité des systèmes.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA améliore l'efficacité des processus industriels et la maintenance prédictive.",
+      "mauvaise_reponse": "L'IA est utilisée dans l'industrie pour la maintenance prédictive, le contrôle qualité et l'optimisation des flux de travail, ce qui la rend plus efficace."
+    },
+    {
+      "question": "En quoi l'IA peut-elle aider le secteur de la santé ?",
+      "options": [
+        {
+          "text": "En automatisant les consultations médicales.",
+          "isCorrect": false
+        },
+        {
+          "text": "En assistant les médecins pour le diagnostic, l'analyse d'images médicales et la découverte de médicaments.",
+          "isCorrect": true
+        },
+        {
+          "text": "En remplaçant les professionnels de santé.",
+          "isCorrect": false
+        },
+        {
+          "text": "En gérant la prise de rendez-vous des patients.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "L'IA est un outil de soutien pour les professionnels de santé, notamment pour l'analyse d'imagerie médicale.",
+      "mauvaise_reponse": "L'IA n'est pas là pour remplacer les médecins, mais pour les assister dans des tâches complexes, comme l'analyse de scanners pour détecter des anomalies ou la recherche de nouvelles molécules."
+    },
+    {
+      "question": "Quelle est la principale source de données pour l'entraînement d'un grand modèle de langage ?",
+      "options": [
+        {
+          "text": "Des données produites par des entreprises de développement d'IA.",
+          "isCorrect": false
+        },
+        {
+          "text": "Des données collectées sur Internet, comme des livres, des articles et des sites web.",
+          "isCorrect": true
+        },
+        {
+          "text": "Des informations exclusivement provenant de publications scientifiques.",
+          "isCorrect": false
+        },
+        {
+          "text": "Des bases de données générées par l'IA elle-même.",
+          "isCorrect": false
+        }
+      ],
+      "points": 1,
+      "reponse_courte": "Les grands modèles de langage sont entraînés sur un corpus de texte immense, principalement issu d'internet.",
+      "mauvaise_reponse": "La majorité des données utilisées pour entraîner un LLM proviennent de vastes corpus de texte et de code disponibles sur Internet, ce qui leur permet de 'comprendre' le langage humain."
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>InOutTracker - IOT</title>
+		<link rel="stylesheet" href="assets/theme_default/css/styles.css" />
+	</head>
+	<body>
+		<header class="main-header">
+			<nav class="navbar">
+				<a href="#home" class="nav-brand"
+					><img src="assets/theme_default/img/logo_252x81.webp"</a
+				>
+				<ul class="nav-links">
+					<li class="nav-item-logged-in" style="display: none"
+						><a href="#profile" class="nav-link">Profil</a></li
+					>
+					<li class="nav-item-logged-in" style="display: none"
+						><a href="#badges" class="nav-link">Badges</a></li
+					>
+					<li class="nav-item-admin" style="display: none"
+						><a href="#admin" class="nav-link">Admin</a></li
+					>
+					<li class="nav-item-logged-out"
+						><a href="#login" class="nav-link button">Connexion</a></li
+					>
+					<li class="nav-item-logged-in" style="display: none"
+						><a href="#" id="logout-btn" class="nav-link button"
+							>Déconnexion</a
+						></li
+					>
+				</ul>
+			</nav>
+		</header>
+
+		<main id="app-root">
+			<!-- Chaque section est une "page" -->
+			<section id="home-page" class="page active">
+				<h1>Bienvenue sur notre plateforme !</h1>
+				<p>Découvrez nos fonctionnalités en vous inscrivant.</p>
+			</section>
+
+			<section id="login-page" class="page">
+				<h2>Connexion</h2>
+				<form id="login-form" class="auth-form">
+					<div class="form-group">
+						<label for="login-email">Email</label>
+						<input type="email" id="login-email" required />
+					</div>
+					<div class="form-group">
+						<label for="login-password">Mot de passe</label>
+						<input type="password" id="login-password" required />
+					</div>
+					<div class="form-error" id="login-error"></div>
+					<button type="submit">Se connecter</button>
+					<p
+						>Pas encore de compte ?
+						<a href="#register">Inscrivez-vous</a></p
+					>
+					<p><a href="#request-reset-page">Mot de passe oublié ?</a></p>
+				</form>
+			</section>
+
+			<section id="register-page" class="page">
+				<h2>Inscription</h2>
+				<form id="register-form" class="auth-form">
+					<div class="form-group">
+						<label for="register-email">Email</label>
+						<input type="email" id="register-email" required />
+					</div>
+					<div class="form-group">
+						<label for="register-pseudo">Pseudo</label>
+						<input type="text" id="register-pseudo" required />
+					</div>
+					<div class="form-group">
+						<label for="register-password">Mot de passe</label>
+						<input type="password" id="register-password" required />
+					</div>
+					<div class="form-error" id="register-error"></div>
+					<button type="submit">S'inscrire</button>
+					<p>Déjà un compte ? <a href="#login">Connectez-vous</a></p>
+				</form>
+			</section>
+
+			<section id="profile-page" class="page">
+				<h2>Mon Profil</h2>
+				<div id="profile-view">
+					<p
+						><strong>Pseudo :</strong> <span id="profile-pseudo"></span
+					></p>
+					<p><strong>Email :</strong> <span id="profile-email"></span></p>
+					<p
+						><strong>Prénom :</strong>
+						<span id="profile-firstname">N/A</span></p
+					>
+					<p
+						><strong>Nom :</strong>
+						<span id="profile-lastname">N/A</span></p
+					>
+					<button id="edit-profile-btn">Modifier le profil</button>
+				</div>
+				<form
+					id="profile-edit-form"
+					class="auth-form"
+					style="display: none">
+					<input type="hidden" id="profile-csrf-token" />
+					<div class="form-group">
+						<label for="profile-edit-pseudo">Pseudo</label>
+						<input type="text" id="profile-edit-pseudo" required />
+					</div>
+					<div class="form-group">
+						<label for="profile-edit-firstname">Prénom</label>
+						<input type="text" id="profile-edit-firstname" />
+					</div>
+					<div class="form-group">
+						<label for="profile-edit-lastname">Nom</label>
+						<input type="text" id="profile-edit-lastname" />
+					</div>
+					<div class="form-error" id="profile-error"></div>
+					<button type="submit">Enregistrer</button>
+					<button type="button" id="cancel-edit-profile-btn"
+						>Annuler</button
+					>
+				</form>
+			</section>
+
+			<section id="admin-page" class="page">
+				<div class="admin-layout">
+					<aside class="admin-sidebar">
+						<h3>Admin Menu</h3>
+						<nav class="admin-nav">
+							<ul>
+								<li
+									><a
+										href="#admin/dashboard"
+										class="admin-nav-link"
+										data-target="dashboard"
+										>Tableau de bord</a
+									></li
+								>
+								<li
+									><a
+										href="#admin/users"
+										class="admin-nav-link"
+										data-target="users"
+										>Gérer les utilisateurs</a
+									></li
+								>
+								<li
+									><a
+										href="#admin/polls"
+										class="admin-nav-link"
+										data-target="polls"
+										>Gérer les sondages</a
+									></li
+								>
+							</ul>
+						</nav>
+					</aside>
+					<main class="admin-main-content">
+						<!-- Section Tableau de bord -->
+						<div id="admin-dashboard" class="admin-section">
+							<h2>Tableau de bord</h2>
+							<div class="dashboard-stats">
+								<div class="stat-card">
+									<h4>Utilisateurs</h4>
+									<p id="stats-total-users">0</p>
+								</div>
+								<div class="stat-card">
+									<h4>Sondages</h4>
+									<p id="stats-total-polls">0</p>
+								</div>
+								<div class="stat-card">
+									<h4>Sondages Terminés</h4>
+									<p id="stats-finished-polls">0</p>
+								</div>
+								<div class="stat-card">
+									<h4>Badges Obtenus</h4>
+									<p id="stats-total-badges">0</p>
+								</div>
+							</div>
+							<div class="dashboard-leaderboard">
+								<h3>Top 10 Utilisateurs (par points)</h3>
+								<ol id="leaderboard-points">
+									<!-- Top users by points here -->
+								</ol>
+							</div>
+						</div>
+
+						<!-- Section Gestion des utilisateurs -->
+						<div
+							id="admin-users"
+							class="admin-section"
+							style="display: none">
+							<h2>Gestion des utilisateurs</h2>
+							<table class="user-table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Email</th>
+										<th>Pseudo</th>
+										<th>Admin</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody id="admin-user-list">
+									<!-- Les utilisateurs seront injectés ici par le JS -->
+								</tbody>
+							</table>
+						</div>
+
+						<!-- Section Gestion des sondages -->
+						<div
+							id="admin-polls"
+							class="admin-section"
+							style="display: none">
+							<h2>Gestion des sondages</h2>
+							<p
+								>La fonctionnalité de gestion des sondages sera bientôt
+								disponible.</p
+							>
+							<!-- Le contenu pour la gestion des sondages ira ici -->
+						</div>
+					</main>
+				</div>
+			</section>
+
+			<section id="badges-page" class="page">
+				<h2>Mes Badges</h2>
+				<div id="badges-list" class="badges-container">
+					<!-- Les badges seront injectés ici par le JS -->
+				</div>
+			</section>
+
+			<section id="request-reset-page" class="page">
+				<h2>Mot de passe oublié</h2>
+				<form id="request-reset-form" class="auth-form">
+					<p
+						>Entrez votre email pour recevoir un lien de
+						réinitialisation.</p
+					>
+					<div class="form-group">
+						<label for="reset-email">Email</label>
+						<input type="email" id="reset-email" required />
+					</div>
+					<div class="form-error" id="request-reset-error"></div>
+					<button type="submit">Envoyer</button>
+				</form>
+			</section>
+
+			<section id="confirm-reset-page" class="page">
+				<h2>Nouveau mot de passe</h2>
+				<form id="confirm-reset-form" class="auth-form">
+					<input type="hidden" id="reset-token-field" />
+					<div class="form-group">
+						<label for="confirm-password">Nouveau mot de passe</label>
+						<input type="password" id="confirm-password" required />
+					</div>
+					<div class="form-error" id="confirm-reset-error"></div>
+					<button type="submit">Réinitialiser</button>
+				</form>
+			</section>
+		</main>
+
+		<footer class="main-footer">
+			<p>&copy; 2025 QuiWizz. Tous droits réservés.</p>
+		</footer>
+
+		<!-- Scripts JS -->
+		<script src="assets/js/api.js"></script>
+		<script src="assets/js/auth.js"></script>
+		<script src="assets/js/profile.js"></script>
+		<script src="assets/js/admin.js"></script>
+		<script src="assets/js/app.js"></script>
+	</body>
+</html>
