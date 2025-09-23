@@ -78,7 +78,7 @@ const admin = (() => {
             if (data.top_10_users_by_points.length > 0) {
                 data.top_10_users_by_points.forEach(user => {
                     const li = document.createElement('li');
-                    li.textContent = `${user.pseudo} - ${user.total_points} points`;
+                    li.textContent = user.pseudo + ' - ' + user.total_points + ' points';
                     leaderboardList.appendChild(li);
                 });
             } else {
@@ -97,7 +97,7 @@ const admin = (() => {
             renderUserTable(users);
         } catch (error) {
             console.error("Erreur lors du chargement des utilisateurs", error);
-            userListBody.innerHTML = `<tr><td colspan="5" class="error">Erreur de chargement des données.</td></tr>`;
+            userListBody.innerHTML = '<tr><td colspan="5" class="error">Erreur de chargement des données.</td></tr>';
         }
     }
 
@@ -110,16 +110,14 @@ const admin = (() => {
         }
         users.forEach(user => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${user.id}</td>
-                <td>${user.email}</td>
-                <td>${user.pseudo}</td>
-                <td>${user.is_admin ? 'Oui' : 'Non'}</td>
-                <td class="actions">
-                    ${!user.is_admin ? `<button class="promote-btn" data-user-id="${user.id}">Promouvoir</button>` : ''}
-                    ${user.is_admin ? `<button class="demote-btn" data-user-id="${user.id}">Rétrograder</button>` : ''}
-                </td>
-            `;
+            tr.innerHTML = '<td>' + user.id + '</td>' +
+                '<td>' + user.email + '</td>' +
+                '<td>' + user.pseudo + '</td>' +
+                '<td>' + (user.is_admin ? 'Oui' : 'Non') + '</td>' +
+                '<td class="actions">' +
+                (!user.is_admin ? '<button class="promote-btn" data-user-id="' + user.id + '">Promouvoir</button>' : '') +
+                (user.is_admin ? '<button class="demote-btn" data-user-id="' + user.id + '">Rétrograder</button>' : '') +
+                '</td>';
             userListBody.appendChild(tr);
         });
         userListBody.querySelectorAll('.promote-btn, .demote-btn').forEach(btn => {
@@ -131,12 +129,13 @@ const admin = (() => {
         const button = event.target;
         const userId = button.dataset.userId;
         const action = button.classList.contains('promote-btn') ? 'admin_promote_user' : 'admin_demote_user';
-        if (!confirm(`Êtes-vous sûr de vouloir ${action === 'admin_promote_user' ? 'promouvoir' : 'rétrograder'} cet utilisateur ?`)) return;
+        const confirmationText = 'Êtes-vous sûr de vouloir ' + (action === 'admin_promote_user' ? 'promouvoir' : 'rétrograder') + ' cet utilisateur ?';
+        if (!confirm(confirmationText)) return;
         try {
             await api.post(action, { user_id: userId });
             loadUsers();
         } catch (error) {
-            alert(`Erreur: ${error.error || 'Une erreur est survenue. Err:1'}`);
+            alert('Erreur: ' + (error.error || 'Une erreur est survenue. Err:1'));
         }
     }
 
@@ -148,7 +147,7 @@ const admin = (() => {
             renderArticleTable(articlesCache);
         } catch (error) {
             console.error("Erreur lors du chargement des articles", error);
-            document.getElementById('admin-article-list').innerHTML = `<tr><td colspan="6" class="error">Erreur de chargement des données.</td></tr>`;
+            document.getElementById('admin-article-list').innerHTML = '<tr><td colspan="6" class="error">Erreur de chargement des données.</td></tr>';
         }
     }
 
@@ -161,17 +160,15 @@ const admin = (() => {
         }
         articles.forEach(article => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${article.id}</td>
-                <td>${article.barcode}</td>
-                <td>${article.name}</td>
-                <td>${article.category || 'N/A'}</td>
-                <td>${article.condition || 'N/A'}</td>
-                <td class="actions">
-                    <button class="edit-btn" data-article-id="${article.id}">Modifier</button>
-                    <button class="delete-btn" data-article-id="${article.id}">Supprimer</button>
-                </td>
-            `;
+            tr.innerHTML = '<td>' + article.id + '</td>' +
+                '<td>' + article.barcode + '</td>' +
+                '<td>' + article.name + '</td>' +
+                '<td>' + (article.category || 'N/A') + '</td>' +
+                '<td>' + (article.condition || 'N/A') + '</td>' +
+                '<td class="actions">' +
+                '<button class="edit-btn" data-article-id="' + article.id + '">Modifier</button>' +
+                '<button class="delete-btn" data-article-id="' + article.id + '">Supprimer</button>' +
+                '</td>';
             articleListBody.appendChild(tr);
         });
 
@@ -215,7 +212,7 @@ const admin = (() => {
             await api.post('admin/articles/delete', { id: articleId });
             loadArticles();
         } catch (error) {
-            alert(`Erreur: ${error.error || 'Impossible de supprimer l'article.'}`);
+            alert('Erreur: ' + (error.error || 'Impossible de supprimer l\'article.'));
         }
     }
 
