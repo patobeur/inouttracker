@@ -4,6 +4,23 @@ document.addEventListener("DOMContentLoaded", () => {
 	const navLoggedIn = document.querySelectorAll(".nav-item-logged-in");
 	const navLoggedOut = document.querySelectorAll(".nav-item-logged-out");
 	const navAdmin = document.querySelectorAll(".nav-item-admin");
+	const navToggle = document.querySelector(".nav-toggle");
+	const navLinksList = document.getElementById("nav-links-list");
+
+	if (navToggle && navLinksList) {
+		// Toggle menu on hamburger click
+		navToggle.addEventListener("click", (e) => {
+			e.stopPropagation();
+			navLinksList.classList.toggle("active");
+		});
+
+		// Close menu when a link is clicked inside it
+		navLinksList.addEventListener("click", () => {
+			if (navLinksList.classList.contains("active")) {
+				navLinksList.classList.remove("active");
+			}
+		});
+	}
 
 	const app = {
 		// Affiche la page correspondante au hash et cache les autres
@@ -11,8 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			pages.forEach((page) => {
 				page.classList.toggle("active", page.id === pageId);
 			});
-			// Pour les petits écrans, fermer le menu nav après un clic
-			// (Implémentation future si un menu burger est ajouté)
 		},
 
 		// Met à jour l'UI en fonction de l'état de connexion
