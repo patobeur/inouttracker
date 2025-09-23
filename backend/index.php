@@ -118,13 +118,21 @@ switch ($action) {
         $install_file = __DIR__ . '/install.php';
         if (file_exists($install_file)) {
             require_once $install_file;
-            if (run_installation($pdo)) {
-                send_json_response([
-                    'success' => true,
-                    'message' => "La base de données a été installée avec succès. N'oubliez pas de supprimer le fichier install.php !"
-                ]);
+            $result = run_installation($pdo);
+
+            if ($result['success']) {
+                // Renommer le fichier d'installation pour des raisons de sécurité
+                $renamed_file = __DIR__ . '/install_a_effacer.php';
+                if (rename($install_file, $renamed_file)) {
+                    send_json_response([
+                        'success' => true,
+                        'message' => "L'installation a réussi ! Le fichier d'installation a été renommé en 'install_a_effacer.php'. Vous pouvez maintenant le supprimer."
+                    ]);
+                } else {
+                    send_error_response("L'installation a réussi, mais le renommage du fichier install.php a échoué. Veuillez le faire manuellement.", 500);
+                }
             } else {
-                send_error_response("L'installation a échoué. Vérifiez les logs du serveur pour plus de détails.", 500);
+                send_error_response("L'installation a échoué : " . ($result['error'] ?? 'Erreur inconnue'), 500);
             }
         } else {
             send_error_response("Le fichier d'installation n'a pas été trouvé ou l'application est déjà installée.", 404);

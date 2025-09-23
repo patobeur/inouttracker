@@ -51,8 +51,18 @@
 
 			<section id="install-page" class="page">
 				<h2>Installation requise</h2>
-				<p>La base de données ne semble pas être installée. Cliquez sur le bouton ci-dessous pour lancer l'installation.</p>
-				<button id="install-btn" class="button">Installer la base de données</button>
+				<div id="install-prompt">
+					<p>La base de données ne semble pas être installée. Cliquez sur le bouton ci-dessous pour lancer l'installation.</p>
+					<button id="install-btn" class="button">Installer la base de données</button>
+				</div>
+				<div id="install-progress" style="display: none;">
+					<h3>Progression de l'installation :</h3>
+					<ul id="install-steps">
+						<li id="step-tables">Création des tables...</li>
+						<li id="step-seed">Insertion des données initiales...</li>
+						<li id="step-verify">Vérification de l'installation...</li>
+					</ul>
+				</div>
 				<div class="form-error" id="install-error"></div>
 			</section>
 

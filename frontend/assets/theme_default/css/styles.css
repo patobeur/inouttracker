@@ -407,3 +407,29 @@ button:hover,
 .notification.error {
 	background-color: var(--color-error);
 }
+
+/* Style pour la progression de l'installation */
+#install-progress ul {
+	list-style: none;
+	padding: 0;
+	margin-top: 1rem;
+}
+
+#install-progress li {
+	padding: 8px;
+	border-bottom: 1px solid var(--color-border);
+	transition: all 0.3s ease;
+}
+
+#install-progress li::before {
+	content: '⏳';
+	margin-right: 10px;
+}
+
+#install-progress li.success::before {
+	content: '✅';
+}
+
+#install-progress li.error::before {
+	content: '❌';
+}
