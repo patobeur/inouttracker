@@ -19,7 +19,7 @@ if (file_exists(__DIR__ . '/env.php') && (require __DIR__ . '/env.php')['DEBUG']
 // Inclure response.php immédiatement pour qu'il soit disponible dans le gestionnaire d'exceptions.
 require_once __DIR__ . '/lib/response.php';
 
-set_exception_handler(function($exception) {
+set_exception_handler(function ($exception) {
     // On ne peut pas dépendre de la configuration globale ici, car une erreur peut
     // survenir avant son chargement. On la charge donc spécifiquement.
     $config = [];
@@ -51,7 +51,7 @@ set_exception_handler(function($exception) {
     send_error_response($errorMessage, 500, $errorDetails);
 });
 
-set_error_handler(function($severity, $message, $file, $line) {
+set_error_handler(function ($severity, $message, $file, $line) {
     if (!(error_reporting() & $severity)) {
         // Ce code d'erreur n'est pas inclus dans error_reporting
         return;
@@ -107,13 +107,19 @@ require_once __DIR__ . '/lib/auth.php';
 require_once __DIR__ . '/lib/profile.php';
 require_once __DIR__ . '/lib/badges.php';
 require_once __DIR__ . '/lib/admin.php';
+
 // require_once __DIR__ . '/lib/mailer.php'; // Sera inclus plus tard quand nécessaire
 
 // Initialiser la connexion à la base de données
 try {
     $pdo = get_db_connection($config);
     // S'assurer que les tables existent
-    create_tables_if_not_exists($pdo);
+
+    if (file_exists(__DIR__ . '/install.php')) {
+        require_once __DIR__ . '/install.php';
+        // if install.php existe
+        create_tables_if_not_exists($pdo);
+    }
 } catch (PDOException $e) {
     // En cas d'échec de connexion, on envoie une réponse d'erreur générique
     send_json_response(['error' => 'Service temporairement indisponible.'], 503);
