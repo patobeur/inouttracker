@@ -112,13 +112,29 @@ require_once __DIR__ . '/lib/admin.php';
 // Initialiser la connexion à la base de données
 try {
     $pdo = get_db_connection($config);
-    // S'assurer que les tables existent
-    create_tables_if_not_exists($pdo);
 } catch (PDOException $e) {
     // En cas d'échec de connexion, on envoie une réponse d'erreur générique
     send_json_response(['error' => 'Service temporairement indisponible.'], 503);
     exit;
 }
+
+// Vérifier si une installation est nécessaire
+if (file_exists(__DIR__ . '/install.php')) {
+    try {
+        // Essayer de vérifier si la table des utilisateurs existe.
+        $pdo->query("SELECT 1 FROM users LIMIT 1");
+    } catch (PDOException $e) {
+        // L'erreur PDO indique probablement que la table n'existe pas.
+        // C'est le signal pour lancer l'installation.
+        $install_url = 'install.php?confirm=true';
+        // Nettoyer toute sortie précédente pour assurer une redirection propre.
+        ob_end_clean();
+        // Rediriger vers le script d'installation.
+        header("Location: $install_url");
+        exit; // Arrêter l'exécution pour que la redirection ait lieu.
+    }
+}
+
 
 // Initialiser le token CSRF s'il n'existe pas
 init_csrf_token();
