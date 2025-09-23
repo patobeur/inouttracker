@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+	const CONSOLE_ON = false;
 	const pages = document.querySelectorAll(".page");
 	const navLoggedIn = document.querySelectorAll(".nav-item-logged-in");
 	const navLoggedOut = document.querySelectorAll(".nav-item-logged-out");
@@ -47,7 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Attendre que l'authentification soit vérifiée
 				await auth.waitForAuth();
 				if (!auth.isUserAdmin()) {
-					// console.warn("Tentative d'accès non autorisé à la page admin.");
+					if (CONSOLE_ON) {
+						console.warn(
+							"Tentative d'accès non autorisé à la page admin."
+						);
+					}
 					window.location.hash = "home"; // Redirection
 					return; // Arrêter le traitement pour cette route
 				}
