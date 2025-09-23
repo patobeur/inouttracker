@@ -19,6 +19,12 @@ global $pdo, $config;
 
 // Routes qui ne nécessitent pas d'authentification
 switch ($action) {
+    case 'status':
+        // Cet endpoint vérifie si l'application est installée (si la table users existe)
+        $is_installed = table_exists($pdo, 'users');
+        send_json_response(['installed' => $is_installed]);
+        break;
+
     case 'register':
         rate_limit('register', 5, 3600); // Limite à 5 inscriptions par heure par IP
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -130,7 +136,7 @@ switch ($action) {
 if (!is_user_logged_in()) {
     // Si l'action n'est pas une action publique, et que l'utilisateur n'est pas connecté,
     // on renvoie une erreur 401, sauf si une réponse a déjà été envoyée.
-    $public_actions = ['register', 'login', 'get_csrf_token', 'request_reset', 'confirm_reset', 'install'];
+    $public_actions = ['register', 'login', 'get_csrf_token', 'request_reset', 'confirm_reset', 'install', 'status'];
     if ($action !== '' && !in_array($action, $public_actions)) {
          send_error_response('Authentification requise.', 401);
     } else if ($action === '') {
