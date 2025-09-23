@@ -1,2 +1,3 @@
 backend/env.php
 frontend/clear_db.php
+backend/storage/app.db
