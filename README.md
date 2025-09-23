@@ -175,4 +175,4 @@ Application web de **gestion des entrées/sorties de matériel en location** ave
 
 -  Modifiez et renommez backend/env.example.php en backend/env.php
 -  Allez sur votre site https://inouttracker.pat/
--  après l'installation supprimez backend/install.php
+-  après l'installation supprimez ou renommez backend/install.php
