@@ -58,6 +58,24 @@ function create_tables_if_not_exists(PDO $pdo)
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );";
 
+    // les sections = [ "BTS COM", "BTS SIO", "BACHELOR A", "BACHELOR B", "BACHELOR C" ]
+    // les description sont en fonction des sections 'ex pour BTS COM : BTS Communication'
+    $sections_sql = "
+    CREATE TABLE IF NOT EXISTS sections (
+        id " . $id . ",
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+    );";
+
+    // les promos = [ "2022-2024", "2023-2025", "2024-2026", "2025-2027", "2026-2028" ]
+    // les description sont en fonction des promos 'ex pour 2022-2024 : 2022-2024 (2 ans)'
+    $promos_sql = "
+    CREATE TABLE IF NOT EXISTS promos (
+        id " . $id . ",
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+    );";
+
     $clients_sql = "
     CREATE TABLE IF NOT EXISTS clients (
         id " . $id . ",
@@ -71,7 +89,9 @@ function create_tables_if_not_exists(PDO $pdo)
         invalidated_reason TEXT,
         deleted_at DATETIME,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        promo_id INT NOT NULL,
+        section_id INT NOT NULL,
     );";
 
     $articles_sql = "
@@ -97,11 +117,14 @@ function create_tables_if_not_exists(PDO $pdo)
         FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE RESTRICT ON UPDATE RESTRICT
     );";
 
+
     // Exécuter les créations de table
     $pdo->exec($users_sql);
     $pdo->exec($badges_sql);
     $pdo->exec($user_badges_sql);
     $pdo->exec($sondages_sql);
+    $pdo->exec($sections_sql);
+    $pdo->exec($promos_sql);
     $pdo->exec($clients_sql);
     $pdo->exec($articles_sql);
     $pdo->exec($movements_sql);
