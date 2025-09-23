@@ -170,3 +170,9 @@ Application web de **gestion des entrées/sorties de matériel en location** ave
 -  **Suppression client** avec mouvements existants → **refuser hard delete**, **autoriser soft delete**.
 
 ---
+
+## 10) Installation
+
+-  Modifiez et renommez backend/env.example.php en backend/env.php
+-  Allez sur votre site https://inouttracker.pat/
+-  après l'installation supprimez backend/install.php
