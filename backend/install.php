@@ -5,11 +5,23 @@
  * ce fichier devra etre effacer par l'utilisateur apres installation
  *
  * @param PDO $pdo L'objet de connexion PDO.
+ * @return array Un tableau contenant le statut du succès et des détails sur les vérifications.
  */
-function create_tables_if_not_exists(PDO $pdo)
+function run_installation(PDO $pdo): array
 {
-    // Détecter le type de driver pour adapter les types de données
-    $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+    $results = [
+        'success' => false,
+        'checks' => [
+            'tables_created' => false,
+            'admin_user_created' => false,
+            'initial_data_seeded' => false,
+        ],
+        'error' => null,
+    ];
+
+    try {
+        // Détecter le type de driver pour adapter les types de données
+        $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     $id = $driver === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
     // Définitions de schémas SQL
     $users_sql = "
@@ -287,4 +299,28 @@ function create_tables_if_not_exists(PDO $pdo)
             }
         }
     }
+
+        // --- Vérification finale ---
+        $results['checks']['tables_created'] = table_exists($pdo, 'users') && table_exists($pdo, 'articles');
+
+        $stmt_admin = $pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 1");
+        $results['checks']['admin_user_created'] = $stmt_admin->fetchColumn() > 0;
+
+        $stmt_data = $pdo->query("SELECT COUNT(*) FROM articles");
+        $results['checks']['initial_data_seeded'] = $stmt_data->fetchColumn() > 0;
+
+        // Si toutes les vérifications sont bonnes, on considère l'installation réussie
+        if (in_array(false, $results['checks'], true)) {
+            throw new Exception("La vérification post-installation a échoué.");
+        }
+
+        $results['success'] = true;
+
+    } catch (Exception $e) {
+        $results['error'] = $e->getMessage();
+        // En cas d'erreur, on peut logger l'erreur pour le débogage
+        error_log("Erreur lors de l'installation de la base de données : " . $e->getMessage());
+    }
+
+    return $results;
 }

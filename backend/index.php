@@ -19,6 +19,12 @@ global $pdo, $config;
 
 // Routes qui ne nécessitent pas d'authentification
 switch ($action) {
+    case 'status':
+        // Cet endpoint vérifie si l'application est installée (si la table users existe)
+        $is_installed = table_exists($pdo, 'users');
+        send_json_response(['installed' => $is_installed]);
+        break;
+
     case 'register':
         rate_limit('register', 5, 3600); // Limite à 5 inscriptions par heure par IP
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -103,13 +109,42 @@ switch ($action) {
             send_error_response($result['message'], 400);
         }
         break;
+
+    case 'install':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            send_error_response('Méthode non autorisée', 405);
+        }
+
+        $install_file = __DIR__ . '/install.php';
+        if (file_exists($install_file)) {
+            require_once $install_file;
+            $result = run_installation($pdo);
+
+            if ($result['success']) {
+                // Renommer le fichier d'installation pour des raisons de sécurité
+                $renamed_file = __DIR__ . '/install_a_effacer.php';
+                if (rename($install_file, $renamed_file)) {
+                    send_json_response([
+                        'success' => true,
+                        'message' => "L'installation a réussi ! Le fichier d'installation a été renommé en 'install_a_effacer.php'. Vous pouvez maintenant le supprimer."
+                    ]);
+                } else {
+                    send_error_response("L'installation a réussi, mais le renommage du fichier install.php a échoué. Veuillez le faire manuellement.", 500);
+                }
+            } else {
+                send_error_response("L'installation a échoué : " . ($result['error'] ?? 'Erreur inconnue'), 500);
+            }
+        } else {
+            send_error_response("Le fichier d'installation n'a pas été trouvé ou l'application est déjà installée.", 404);
+        }
+        break;
 }
 
 // Routes qui nécessitent une authentification
 if (!is_user_logged_in()) {
     // Si l'action n'est pas une action publique, et que l'utilisateur n'est pas connecté,
     // on renvoie une erreur 401, sauf si une réponse a déjà été envoyée.
-    $public_actions = ['register', 'login', 'get_csrf_token', 'request_reset', 'confirm_reset'];
+    $public_actions = ['register', 'login', 'get_csrf_token', 'request_reset', 'confirm_reset', 'install', 'status'];
     if ($action !== '' && !in_array($action, $public_actions)) {
          send_error_response('Authentification requise.', 401);
     } else if ($action === '') {

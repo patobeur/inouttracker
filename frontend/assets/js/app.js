@@ -96,7 +96,52 @@ document.addEventListener("DOMContentLoaded", () => {
 			auth.init(this);
 			profile.init(this);
 			admin.init(this);
-		},
+
+		// Gestionnaire pour le bouton d'installation
+		document.getElementById("install-btn").addEventListener("click", this.handleInstall.bind(this));
+	},
+
+	// Gère l'appel API pour l'installation
+	async handleInstall() {
+		const errorDiv = document.getElementById("install-error");
+		const notificationDiv = document.getElementById("system-notification");
+		const installPrompt = document.getElementById("install-prompt");
+		const installProgress = document.getElementById("install-progress");
+		const stepTables = document.getElementById("step-tables");
+		const stepSeed = document.getElementById("step-seed");
+		const stepVerify = document.getElementById("step-verify");
+
+		errorDiv.textContent = "";
+		installPrompt.style.display = "none";
+		installProgress.style.display = "block";
+
+		try {
+			// Simuler une progression même si l'appel est unique
+			stepTables.classList.add("success");
+			await new Promise(resolve => setTimeout(resolve, 300)); // Courte pause pour l'effet visuel
+			stepSeed.classList.add("success");
+			await new Promise(resolve => setTimeout(resolve, 300));
+
+			const data = await api.post("install", {});
+
+			stepVerify.classList.add("success");
+
+			if (data.success) {
+				notificationDiv.textContent = data.message;
+				notificationDiv.className = "notification success";
+				notificationDiv.style.display = "block";
+				installProgress.style.display = "none";
+
+				setTimeout(() => window.location.reload(), 4000);
+			}
+		} catch (error) {
+			stepVerify.classList.add("error");
+			errorDiv.textContent = error.error || "Une erreur critique est survenue lors de l'installation.";
+			// Ré-afficher le bouton pour une nouvelle tentative
+			installPrompt.style.display = "block";
+			installProgress.style.display = "none";
+		}
+	},
 	};
 
 	// Lancer l'application

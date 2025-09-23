@@ -37,3 +37,32 @@ function get_db_connection(array $config): PDO
 
     return $pdo;
 }
+
+/**
+ * Vérifie si une table existe dans la base de données.
+ *
+ * @param PDO $pdo L'objet de connexion PDO.
+ * @param string $tableName Le nom de la table à vérifier.
+ * @return bool Vrai si la table existe, faux sinon.
+ */
+function table_exists(PDO $pdo, string $tableName): bool
+{
+    $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+    try {
+        if ($driver === 'sqlite') {
+            $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name = :tableName";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':tableName' => $tableName]);
+            return $stmt->fetchColumn() !== false;
+        } else {
+            // Pour MySQL et autres, on tente une requête simple.
+            // Si la table n'existe pas, une PDOException sera levée.
+            $pdo->query("SELECT 1 FROM " . preg_replace('/[^a-zA-Z0-9_]/', '', $tableName) . " LIMIT 1");
+            return true;
+        }
+    } catch (PDOException $e) {
+        // L'exception indique que la table n'existe probablement pas.
+        return false;
+    }
+}

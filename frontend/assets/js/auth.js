@@ -37,30 +37,49 @@ const auth = (() => {
 
 	async function checkInitialAuthStatus() {
 		try {
-			// L'endpoint 'me' est parfait pour ça. S'il réussit, on est connecté.
-			const data = await api.get("me");
-			if (data && data.id) {
-				loggedIn = true;
-				isAdmin = data.is_admin || false;
-				app.updateAuthState(true, isAdmin);
-				// Pré-remplir le token CSRF pour les actions futures
-				api.setCsrfToken(data.csrf_token);
+			// 1. Vérifier si l'application est installée
+			const status = await api.get("status");
+
+			if (status.installed) {
+				// 2. Si installé, vérifier si l'utilisateur est connecté
+				try {
+					const meData = await api.get("me");
+					if (meData && meData.id) {
+						loggedIn = true;
+						isAdmin = meData.is_admin || false;
+						app.updateAuthState(true, isAdmin);
+						api.setCsrfToken(meData.csrf_token);
+					}
+				} catch (meError) {
+					// L'erreur 401 est normale ici, signifie juste non connecté
+					if (meError.status !== 401) {
+						if (CONSOLE_ON) console.error("Erreur durant api.get('me')", meError);
+					}
+					loggedIn = false;
+					isAdmin = false;
+					app.updateAuthState(false, false);
+				}
+			} else {
+				// Afficher la page d'installation si non installé
+				app.showPage('install-page');
+				loggedIn = false;
+				isAdmin = false;
+				app.updateAuthState(false, false);
 			}
 		} catch (error) {
-			// L'erreur 401 est attendue si non connecté.
-			if (error.status !== 401) {
-				if (CONSOLE_ON) {
-					console.error(
-						"Erreur lors de la vérification du statut d'authentification",
-						error
-					);
-				}
+			// Gérer l'erreur où même l'endpoint /status échoue (ex: DB non connectée)
+			if (error && error.error === 'Service temporairement indisponible.') {
+				app.showPage('install-page');
+			} else {
+				// Erreur critique non liée à l'installation
+				if (CONSOLE_ON) console.error("Erreur critique durant checkInitialAuthStatus", error);
+				// Afficher un message d'erreur générique à l'utilisateur ?
 			}
 			loggedIn = false;
 			isAdmin = false;
 			app.updateAuthState(false, false);
 		} finally {
-			// Résoudre la promesse pour indiquer que la vérification est terminée
+			// Indiquer que la vérification est terminée
 			resolveAuthReady();
 		}
 	}

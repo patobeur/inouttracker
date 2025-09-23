@@ -113,13 +113,6 @@ require_once __DIR__ . '/lib/admin.php';
 // Initialiser la connexion à la base de données
 try {
     $pdo = get_db_connection($config);
-    // S'assurer que les tables existent
-
-    if (file_exists(__DIR__ . '/install.php')) {
-        require_once __DIR__ . '/install.php';
-        // if install.php existe
-        create_tables_if_not_exists($pdo);
-    }
 } catch (PDOException $e) {
     // En cas d'échec de connexion, on envoie une réponse d'erreur générique
     send_json_response(['error' => 'Service temporairement indisponible.'], 503);
