@@ -283,6 +283,81 @@ switch ($action) {
         }
         break;
 
+    case 'admin/clients':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') { send_error_response('Méthode non autorisée', 405); }
+
+        $clients = get_all_clients($pdo);
+        send_json_response($clients);
+        break;
+
+    case 'admin/clients/create':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $data = [
+            'barcode' => sanitize_input($_POST['barcode'] ?? ''),
+            'first_name' => sanitize_input($_POST['first_name'] ?? ''),
+            'last_name' => sanitize_input($_POST['last_name'] ?? ''),
+            'email' => sanitize_input($_POST['email'] ?? ''),
+            'phone' => sanitize_input($_POST['phone'] ?? ''),
+            'promo_id' => (int)($_POST['promo_id'] ?? 0),
+            'section_id' => (int)($_POST['section_id'] ?? 0),
+        ];
+
+        if (empty($data['barcode']) || empty($data['first_name']) || empty($data['last_name']) || $data['promo_id'] <= 0 || $data['section_id'] <= 0) {
+            send_error_response('Les champs code-barres, prénom, nom, promotion et section sont requis.', 400);
+        }
+
+        if (create_client($pdo, $data)) {
+            send_json_response(['success' => true, 'message' => 'Client créé avec succès.']);
+        } else {
+            send_error_response('Erreur lors de la création du client.', 500);
+        }
+        break;
+
+    case 'admin/clients/update':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $id = (int)($_POST['id'] ?? 0);
+        $data = [
+            'barcode' => sanitize_input($_POST['barcode'] ?? ''),
+            'first_name' => sanitize_input($_POST['first_name'] ?? ''),
+            'last_name' => sanitize_input($_POST['last_name'] ?? ''),
+            'email' => sanitize_input($_POST['email'] ?? ''),
+            'phone' => sanitize_input($_POST['phone'] ?? ''),
+            'promo_id' => (int)($_POST['promo_id'] ?? 0),
+            'section_id' => (int)($_POST['section_id'] ?? 0),
+        ];
+
+        if ($id <= 0 || empty($data['barcode']) || empty($data['first_name']) || empty($data['last_name']) || $data['promo_id'] <= 0 || $data['section_id'] <= 0) {
+            send_error_response('ID, code-barres, prénom, nom, promotion et section sont requis.', 400);
+        }
+
+        if (update_client($pdo, $id, $data)) {
+            send_json_response(['success' => true, 'message' => 'Client mis à jour avec succès.']);
+        } else {
+            send_error_response('Erreur lors de la mise à jour du client.', 500);
+        }
+        break;
+
+    case 'admin/clients/delete':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            send_error_response('ID de client invalide.', 400);
+        }
+
+        if (delete_client($pdo, $id)) {
+            send_json_response(['success' => true, 'message' => 'Client supprimé avec succès.']);
+        } else {
+            send_error_response('Impossible de supprimer le client. Il peut être lié à des mouvements.', 500);
+        }
+        break;
+
     case 'admin_get_users':
         if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') { send_error_response('Méthode non autorisée', 405); }

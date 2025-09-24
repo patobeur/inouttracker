@@ -42,7 +42,10 @@
 		</header>
 
 		<main id="app-root">
-			<div id="system-notification" class="notification" style="display: none;"></div>
+			<div
+				id="system-notification"
+				class="notification"
+				style="display: none"></div>
 			<!-- Chaque section est une "page" -->
 			<section id="home-page" class="page active">
 				<h1>Bienvenue sur notre plateforme !</h1>
@@ -52,10 +55,15 @@
 			<section id="install-page" class="page">
 				<h2>Installation requise</h2>
 				<div id="install-prompt">
-					<p>La base de données ne semble pas être installée. Cliquez sur le bouton ci-dessous pour lancer l'installation.</p>
-					<button id="install-btn" class="button">Installer la base de données</button>
+					<p
+						>La base de données ne semble pas être installée. Cliquez sur
+						le bouton ci-dessous pour lancer l'installation.</p
+					>
+					<button id="install-btn" class="button"
+						>Installer la base de données</button
+					>
 				</div>
-				<div id="install-progress" style="display: none;">
+				<div id="install-progress" style="display: none">
 					<h3>Progression de l'installation :</h3>
 					<ul id="install-steps">
 						<li id="step-tables">Création des tables...</li>
@@ -169,7 +177,7 @@
 										href="#admin/users"
 										class="admin-nav-link"
 										data-target="users"
-										>Gérer les utilisateurs</a
+										>Utilisateurs</a
 									></li
 								>
 								<li
@@ -177,7 +185,7 @@
 										href="#admin/polls"
 										class="admin-nav-link"
 										data-target="polls"
-										>Gérer les sondages</a
+										>Sondages</a
 									></li
 								>
 								<li
@@ -185,7 +193,15 @@
 										href="#admin/articles"
 										class="admin-nav-link"
 										data-target="articles"
-										>Gérer les articles</a
+										>Articles</a
+									></li
+								>
+								<li
+									><a
+										href="#admin/clients"
+										class="admin-nav-link"
+										data-target="clients"
+										>Clients</a
 									></li
 								>
 							</ul>
@@ -244,9 +260,14 @@
 						</div>
 
 						<!-- Section Gestion des articles -->
-						<div id="admin-articles" class="admin-section" style="display: none;">
+						<div
+							id="admin-articles"
+							class="admin-section"
+							style="display: none">
 							<h2>Gestion des articles</h2>
-							<button id="add-article-btn" class="button">Ajouter un article</button>
+							<button id="add-article-btn" class="button"
+								>Ajouter un article</button
+							>
 							<table class="data-table">
 								<thead>
 									<tr>
@@ -262,30 +283,43 @@
 									<!-- Articles will be injected here -->
 								</tbody>
 							</table>
-							<div id="article-form-container" class="form-container" style="display: none;">
+							<div
+								id="article-form-container"
+								class="form-container"
+								style="display: none">
 								<form id="article-form" class="auth-form">
-									<input type="hidden" id="article-id" value="">
+									<input type="hidden" id="article-id" value="" />
 									<h3 id="article-form-title">Ajouter un article</h3>
 									<div class="form-group">
 										<label for="article-barcode">Code-barres</label>
-										<input type="text" id="article-barcode" required>
+										<input
+											type="text"
+											id="article-barcode"
+											required />
 									</div>
 									<div class="form-group">
 										<label for="article-name">Nom</label>
-										<input type="text" id="article-name" required>
+										<input type="text" id="article-name" required />
 									</div>
 									<div class="form-group">
 										<label for="article-category">Catégorie</label>
-										<input type="text" id="article-category">
+										<input type="text" id="article-category" />
 									</div>
 									<div class="form-group">
 										<label for="article-condition">Condition</label>
-										<input type="text" id="article-condition">
+										<input type="text" id="article-condition" />
 									</div>
 									<div class="form-error" id="article-error"></div>
 									<div class="form-actions">
-										<button type="submit" class="button">Enregistrer</button>
-										<button type="button" id="cancel-article-form" class="button button-secondary">Annuler</button>
+										<button type="submit" class="button"
+											>Enregistrer</button
+										>
+										<button
+											type="button"
+											id="cancel-article-form"
+											class="button button-secondary"
+											>Annuler</button
+										>
 									</div>
 								</form>
 							</div>
@@ -302,6 +336,94 @@
 								disponible.</p
 							>
 							<!-- Le contenu pour la gestion des sondages ira ici -->
+						</div>
+
+						<!-- Section Gestion des clients -->
+						<div
+							id="admin-clients"
+							class="admin-section"
+							style="display: none">
+							<h2>Gestion des clients</h2>
+							<button id="add-client-btn" class="button"
+								>Ajouter un client</button
+							>
+							<table class="data-table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Code-barres</th>
+										<th>Prénom</th>
+										<th>Nom</th>
+										<th>Email</th>
+										<th>Téléphone</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody id="admin-client-list">
+									<!-- Clients will be injected here -->
+								</tbody>
+							</table>
+							<div
+								id="client-form-container"
+								class="form-container"
+								style="display: none">
+								<form id="client-form" class="auth-form">
+									<input type="hidden" id="client-id" value="" />
+									<h3 id="client-form-title">Ajouter un client</h3>
+									<div class="form-group">
+										<label for="client-barcode">Code-barres</label>
+										<input type="text" id="client-barcode" required />
+									</div>
+									<div class="form-group">
+										<label for="client-first_name">Prénom</label>
+										<input
+											type="text"
+											id="client-first_name"
+											required />
+									</div>
+									<div class="form-group">
+										<label for="client-last_name">Nom</label>
+										<input
+											type="text"
+											id="client-last_name"
+											required />
+									</div>
+									<div class="form-group">
+										<label for="client-email">Email</label>
+										<input type="email" id="client-email" />
+									</div>
+									<div class="form-group">
+										<label for="client-phone">Téléphone</label>
+										<input type="tel" id="client-phone" />
+									</div>
+									<div class="form-group">
+										<label for="client-promo_id">Promotion</label>
+										<input
+											type="number"
+											id="client-promo_id"
+											required />
+									</div>
+									<div class="form-group">
+										<label for="client-section_id">Section</label>
+										<input
+											type="number"
+											id="client-section_id"
+											required />
+									</div>
+									<div class="form-error" id="client-error"></div>
+									<div class="form-actions">
+										<button type="submit" class="button"
+											>Enregistrer</button
+										>
+										<button
+											type="button"
+											id="cancel-client-form"
+											class="button button-secondary"
+											>Annuler</button
+										>
+									</div>
+								</form>
+							</div>
 						</div>
 					</main>
 				</div>
