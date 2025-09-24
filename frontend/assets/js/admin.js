@@ -177,26 +177,28 @@ const admin = (() => {
     }
 
     function showArticleFormForCreate() {
+        const formContainer = document.getElementById('article-form-container');
         document.getElementById('article-form').reset();
         document.getElementById('article-id').value = '';
         document.getElementById('article-form-title').textContent = 'Ajouter un article';
-        document.getElementById('article-form-container').style.display = 'block';
+        ui.showModal(formContainer);
     }
 
     function showArticleFormForEdit(articleId) {
         const article = articlesCache.find(a => a.id === articleId);
         if (!article) return;
+        const formContainer = document.getElementById('article-form-container');
         document.getElementById('article-id').value = article.id;
         document.getElementById('article-barcode').value = article.barcode;
         document.getElementById('article-name').value = article.name;
         document.getElementById('article-category').value = article.category || '';
         document.getElementById('article-condition').value = article.condition || '';
         document.getElementById('article-form-title').textContent = 'Modifier l\'article';
-        document.getElementById('article-form-container').style.display = 'block';
+        ui.showModal(formContainer);
     }
 
     function hideArticleForm() {
-        document.getElementById('article-form-container').style.display = 'none';
+        ui.hideModal();
         document.getElementById('article-error').textContent = '';
     }
 
