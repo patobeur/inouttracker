@@ -180,6 +180,14 @@
 										>Gérer les sondages</a
 									></li
 								>
+								<li
+									><a
+										href="#admin/articles"
+										class="admin-nav-link"
+										data-target="articles"
+										>Gérer les articles</a
+									></li
+								>
 							</ul>
 						</nav>
 					</aside>
@@ -247,6 +255,15 @@
 							>
 							<!-- Le contenu pour la gestion des sondages ira ici -->
 						</div>
+
+						<!-- Section Gestion des articles -->
+						<div id="admin-articles" class="admin-section" style="display: none;">
+							<h2>Gestion des articles</h2>
+							<button id="add-article-btn" class="button">Ajouter un article</button>
+							<div id="articles-list-container">
+								<!-- La liste des articles sera chargée ici -->
+							</div>
+						</div>
 					</main>
 				</div>
 			</section>
@@ -291,6 +308,29 @@
 		<footer class="main-footer">
 			<p>&copy; 2025 InOutTracker. Tous droits réservés.</p>
 		</footer>
+
+		<!-- Modal pour les articles -->
+		<div id="article-modal-backdrop" class="modal-backdrop" style="display: none;">
+			<div class="modal-content">
+				<form id="article-form">
+					<h2 id="article-modal-title">Ajouter un article</h2>
+					<input type="hidden" id="article-id" />
+					<div class="form-group">
+						<label for="article-title">Titre</label>
+						<input type="text" id="article-title" required />
+					</div>
+					<div class="form-group">
+						<label for="article-content">Contenu</label>
+						<textarea id="article-content" rows="10" required></textarea>
+					</div>
+					<div class="form-error" id="article-form-error"></div>
+					<div class="modal-actions">
+						<button type="submit" class="button">Enregistrer</button>
+						<button type="button" id="cancel-article-btn" class="button-secondary">Annuler</button>
+					</div>
+				</form>
+			</div>
+		</div>
 
 		<!-- Scripts JS -->
 		<script src="assets/js/api.js"></script>

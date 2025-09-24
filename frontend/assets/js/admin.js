@@ -8,6 +8,7 @@ const admin = (() => {
             dashboard: document.getElementById('admin-dashboard'),
             users: document.getElementById('admin-users'),
             polls: document.getElementById('admin-polls'),
+            articles: document.getElementById('admin-articles'),
         };
 
         adminNavLinks = document.querySelectorAll('.admin-nav-link');
@@ -169,6 +170,68 @@ const admin = (() => {
             alert(`Erreur: ${error.error || 'Une erreur est survenue. Err:1'}`);
         }
     }
+
+    // --- Articles Modal Logic ---
+    function initArticles() {
+        const addArticleBtn = document.getElementById('add-article-btn');
+        const articleModal = document.getElementById('article-modal-backdrop');
+        const cancelArticleBtn = document.getElementById('cancel-article-btn');
+
+        if (addArticleBtn) {
+            addArticleBtn.addEventListener('click', () => {
+                openArticleModal();
+            });
+        }
+
+        if (articleModal) {
+            articleModal.addEventListener('click', (e) => {
+                if (e.target === articleModal) {
+                    closeArticleModal();
+                }
+            });
+        }
+
+        if (cancelArticleBtn) {
+            cancelArticleBtn.addEventListener('click', () => {
+                closeArticleModal();
+            });
+        }
+    }
+
+    function openArticleModal(article = null) {
+        const articleModal = document.getElementById('article-modal-backdrop');
+        const articleForm = document.getElementById('article-form');
+        const modalTitle = document.getElementById('article-modal-title');
+
+        articleForm.reset(); // Reset form fields
+        document.getElementById('article-form-error').textContent = '';
+
+        if (article) {
+            modalTitle.textContent = 'Modifier l\'article';
+            document.getElementById('article-id').value = article.id;
+            document.getElementById('article-title').value = article.title;
+            document.getElementById('article-content').value = article.content;
+        } else {
+            modalTitle.textContent = 'Ajouter un article';
+            document.getElementById('article-id').value = '';
+        }
+
+        if (articleModal) {
+            articleModal.style.display = 'flex';
+        }
+    }
+
+    function closeArticleModal() {
+        const articleModal = document.getElementById('article-modal-backdrop');
+        if (articleModal) {
+            articleModal.style.display = 'none';
+        }
+    }
+
+    // Call initArticles when the admin module is initialized
+    document.addEventListener('DOMContentLoaded', () => {
+        initArticles();
+    });
 
     return {
         init
