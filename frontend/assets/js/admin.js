@@ -2,12 +2,14 @@ const admin = (() => {
     let adminSections = {};
     let adminNavLinks = {};
     let articlesCache = []; // Cache pour les articles
+    let customersCache = []; // Cache pour les clients
 
     function init() {
         adminSections = {
             dashboard: document.getElementById('admin-dashboard'),
             users: document.getElementById('admin-users'),
             articles: document.getElementById('admin-articles'),
+            customers: document.getElementById('admin-customers'),
             polls: document.getElementById('admin-polls'),
         };
 
@@ -23,6 +25,11 @@ const admin = (() => {
         document.getElementById('add-article-btn').addEventListener('click', showArticleFormForCreate);
         document.getElementById('article-form').addEventListener('submit', handleArticleFormSubmit);
         document.getElementById('cancel-article-form').addEventListener('click', hideArticleForm);
+
+        // Event listeners for customer form
+        document.getElementById('add-customer-btn').addEventListener('click', showCustomerFormForCreate);
+        document.getElementById('customer-form').addEventListener('submit', handleCustomerFormSubmit);
+        document.getElementById('cancel-customer-form').addEventListener('click', hideCustomerForm);
     }
 
     function handleAdminRoute() {
@@ -60,6 +67,7 @@ const admin = (() => {
             if (targetId === 'users') loadUsers();
             else if (targetId === 'dashboard') loadDashboardData();
             else if (targetId === 'articles') loadArticles();
+            else if (targetId === 'customers') loadCustomers();
         } else {
             if (adminSections.dashboard) adminSections.dashboard.style.display = 'block';
         }
@@ -238,6 +246,108 @@ const admin = (() => {
             loadArticles();
         } catch (error) {
             document.getElementById('article-error').textContent = error.error || 'Une erreur est survenue.';
+        }
+    }
+
+    // --- Customer Management ---
+
+    async function loadCustomers() {
+        try {
+            customersCache = await api.get('admin/customers');
+            renderCustomerTable(customersCache);
+        } catch (error) {
+            console.error("Erreur lors du chargement des clients", error);
+            document.getElementById('admin-customer-list').innerHTML = '<tr><td colspan="6" class="error">Erreur de chargement des données.</td></tr>';
+        }
+    }
+
+    function renderCustomerTable(customers) {
+        const customerListBody = document.getElementById('admin-customer-list');
+        customerListBody.innerHTML = '';
+        if (customers.length === 0) {
+            customerListBody.innerHTML = '<tr><td colspan="6">Aucun client trouvé.</td></tr>';
+            return;
+        }
+        customers.forEach(customer => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td>' + customer.id + '</td>' +
+                '<td>' + customer.name + '</td>' +
+                '<td>' + (customer.email || 'N/A') + '</td>' +
+                '<td>' + (customer.phone || 'N/A') + '</td>' +
+                '<td>' + (customer.address || 'N/A') + '</td>' +
+                '<td class="actions">' +
+                '<button class="edit-btn" data-customer-id="' + customer.id + '">Modifier</button>' +
+                '<button class="delete-btn" data-customer-id="' + customer.id + '">Supprimer</button>' +
+                '</td>';
+            customerListBody.appendChild(tr);
+        });
+
+        customerListBody.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', handleEditCustomer));
+        customerListBody.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', handleDeleteCustomer));
+    }
+
+    function showCustomerFormForCreate() {
+        document.getElementById('customer-form').reset();
+        document.getElementById('customer-id').value = '';
+        document.getElementById('customer-form-title').textContent = 'Ajouter un client';
+        document.getElementById('customer-form-container').style.display = 'block';
+    }
+
+    function showCustomerFormForEdit(customerId) {
+        const customer = customersCache.find(c => c.id === customerId);
+        if (!customer) return;
+        document.getElementById('customer-id').value = customer.id;
+        document.getElementById('customer-name').value = customer.name;
+        document.getElementById('customer-email').value = customer.email || '';
+        document.getElementById('customer-phone').value = customer.phone || '';
+        document.getElementById('customer-address').value = customer.address || '';
+        document.getElementById('customer-form-title').textContent = 'Modifier le client';
+        document.getElementById('customer-form-container').style.display = 'block';
+    }
+
+    function hideCustomerForm() {
+        document.getElementById('customer-form-container').style.display = 'none';
+        document.getElementById('customer-error').textContent = '';
+    }
+
+    function handleEditCustomer(event) {
+        const customerId = parseInt(event.target.dataset.customerId, 10);
+        showCustomerFormForEdit(customerId);
+    }
+
+    async function handleDeleteCustomer(event) {
+        const customerId = event.target.dataset.customerId;
+        if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) return;
+        try {
+            await api.post('admin/customers/delete', { id: customerId });
+            loadCustomers();
+        } catch (error) {
+            alert('Erreur: ' + (error.error || 'Impossible de supprimer le client.'));
+        }
+    }
+
+    async function handleCustomerFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const customerId = form.querySelector('#customer-id').value;
+        const data = {
+            name: form.querySelector('#customer-name').value,
+            email: form.querySelector('#customer-email').value,
+            phone: form.querySelector('#customer-phone').value,
+            address: form.querySelector('#customer-address').value,
+        };
+
+        const endpoint = customerId ? 'admin/customers/update' : 'admin/customers/create';
+        if (customerId) {
+            data.id = customerId;
+        }
+
+        try {
+            await api.post(endpoint, data);
+            hideCustomerForm();
+            loadCustomers();
+        } catch (error) {
+            document.getElementById('customer-error').textContent = error.error || 'Une erreur est survenue.';
         }
     }
 

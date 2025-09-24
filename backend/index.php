@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/lib/customers.php';
 
 // Gérer les requêtes JSON
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
@@ -280,6 +281,75 @@ switch ($action) {
             send_json_response(['success' => true, 'message' => 'Article supprimé avec succès.']);
         } else {
             send_error_response('Impossible de supprimer l\'article. Il peut être lié à des mouvements.', 500);
+        }
+        break;
+
+    case 'admin/customers':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') { send_error_response('Méthode non autorisée', 405); }
+
+        $customers = get_all_customers($pdo);
+        send_json_response($customers);
+        break;
+
+    case 'admin/customers/create':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $data = [
+            'name' => sanitize_input($_POST['name'] ?? ''),
+            'email' => sanitize_input($_POST['email'] ?? ''),
+            'phone' => sanitize_input($_POST['phone'] ?? ''),
+            'address' => sanitize_input($_POST['address'] ?? ''),
+        ];
+
+        if (empty($data['name'])) {
+            send_error_response('Le nom est requis.', 400);
+        }
+
+        if (create_customer($pdo, $data)) {
+            send_json_response(['success' => true, 'message' => 'Client créé avec succès.']);
+        } else {
+            send_error_response('Erreur lors de la création du client.', 500);
+        }
+        break;
+
+    case 'admin/customers/update':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $id = (int)($_POST['id'] ?? 0);
+        $data = [
+            'name' => sanitize_input($_POST['name'] ?? ''),
+            'email' => sanitize_input($_POST['email'] ?? ''),
+            'phone' => sanitize_input($_POST['phone'] ?? ''),
+            'address' => sanitize_input($_POST['address'] ?? ''),
+        ];
+
+        if ($id <= 0 || empty($data['name'])) {
+            send_error_response('ID et nom sont requis.', 400);
+        }
+
+        if (update_customer($pdo, $id, $data)) {
+            send_json_response(['success' => true, 'message' => 'Client mis à jour avec succès.']);
+        } else {
+            send_error_response('Erreur lors de la mise à jour du client.', 500);
+        }
+        break;
+
+    case 'admin/customers/delete':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            send_error_response('ID de client invalide.', 400);
+        }
+
+        if (delete_customer($pdo, $id)) {
+            send_json_response(['success' => true, 'message' => 'Client supprimé avec succès.']);
+        } else {
+            send_error_response('Impossible de supprimer le client.', 500);
         }
         break;
 

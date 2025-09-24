@@ -188,6 +188,14 @@
 										>Gérer les articles</a
 									></li
 								>
+								<li
+									><a
+										href="#admin/customers"
+										class="admin-nav-link"
+										data-target="customers"
+										>Gérer les clients</a
+									></li
+								>
 							</ul>
 						</nav>
 					</aside>
@@ -286,6 +294,54 @@
 									<div class="form-actions">
 										<button type="submit" class="button">Enregistrer</button>
 										<button type="button" id="cancel-article-form" class="button button-secondary">Annuler</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<!-- Section Gestion des clients -->
+						<div id="admin-customers" class="admin-section" style="display: none;">
+							<h2>Gestion des clients</h2>
+							<button id="add-customer-btn" class="button">Ajouter un client</button>
+							<table class="data-table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Nom</th>
+										<th>Email</th>
+										<th>Téléphone</th>
+										<th>Adresse</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody id="admin-customer-list">
+									<!-- Customers will be injected here -->
+								</tbody>
+							</table>
+							<div id="customer-form-container" class="form-container" style="display: none;">
+								<form id="customer-form" class="auth-form">
+									<input type="hidden" id="customer-id" value="">
+									<h3 id="customer-form-title">Ajouter un client</h3>
+									<div class="form-group">
+										<label for="customer-name">Nom</label>
+										<input type="text" id="customer-name" required>
+									</div>
+									<div class="form-group">
+										<label for="customer-email">Email</label>
+										<input type="email" id="customer-email">
+									</div>
+									<div class="form-group">
+										<label for="customer-phone">Téléphone</label>
+										<input type="tel" id="customer-phone">
+									</div>
+									<div class="form-group">
+										<label for="customer-address">Adresse</label>
+										<input type="text" id="customer-address">
+									</div>
+									<div class="form-error" id="customer-error"></div>
+									<div class="form-actions">
+										<button type="submit" class="button">Enregistrer</button>
+										<button type="button" id="cancel-customer-form" class="button button-secondary">Annuler</button>
 									</div>
 								</form>
 							</div>
