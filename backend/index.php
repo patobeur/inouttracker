@@ -214,6 +214,75 @@ switch ($action) {
         send_json_response($dashboard_data);
         break;
 
+    case 'admin/articles':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') { send_error_response('Méthode non autorisée', 405); }
+
+        $articles = get_all_articles($pdo);
+        send_json_response($articles);
+        break;
+
+    case 'admin/articles/create':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $data = [
+            'barcode' => sanitize_input($_POST['barcode'] ?? ''),
+            'name' => sanitize_input($_POST['name'] ?? ''),
+            'category' => sanitize_input($_POST['category'] ?? ''),
+            'condition' => sanitize_input($_POST['condition'] ?? ''),
+        ];
+
+        if (empty($data['barcode']) || empty($data['name'])) {
+            send_error_response('Le code-barres et le nom sont requis.', 400);
+        }
+
+        if (create_article($pdo, $data)) {
+            send_json_response(['success' => true, 'message' => 'Article créé avec succès.']);
+        } else {
+            send_error_response('Erreur lors de la création de l\'article.', 500);
+        }
+        break;
+
+    case 'admin/articles/update':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $id = (int)($_POST['id'] ?? 0);
+        $data = [
+            'barcode' => sanitize_input($_POST['barcode'] ?? ''),
+            'name' => sanitize_input($_POST['name'] ?? ''),
+            'category' => sanitize_input($_POST['category'] ?? ''),
+            'condition' => sanitize_input($_POST['condition'] ?? ''),
+        ];
+
+        if ($id <= 0 || empty($data['barcode']) || empty($data['name'])) {
+            send_error_response('ID, code-barres et nom sont requis.', 400);
+        }
+
+        if (update_article($pdo, $id, $data)) {
+            send_json_response(['success' => true, 'message' => 'Article mis à jour avec succès.']);
+        } else {
+            send_error_response('Erreur lors de la mise à jour de l\'article.', 500);
+        }
+        break;
+
+    case 'admin/articles/delete':
+        if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { send_error_response('Méthode non autorisée', 405); }
+
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            send_error_response('ID d\'article invalide.', 400);
+        }
+
+        if (delete_article($pdo, $id)) {
+            send_json_response(['success' => true, 'message' => 'Article supprimé avec succès.']);
+        } else {
+            send_error_response('Impossible de supprimer l\'article. Il peut être lié à des mouvements.', 500);
+        }
+        break;
+
     case 'admin_get_users':
         if (!is_user_admin()) { send_error_response('Accès non autorisé.', 403); }
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') { send_error_response('Méthode non autorisée', 405); }

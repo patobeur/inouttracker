@@ -180,6 +180,14 @@
 										>Gérer les sondages</a
 									></li
 								>
+								<li
+									><a
+										href="#admin/articles"
+										class="admin-nav-link"
+										data-target="articles"
+										>Gérer les articles</a
+									></li
+								>
 							</ul>
 						</nav>
 					</aside>
@@ -233,6 +241,54 @@
 									<!-- Les utilisateurs seront injectés ici par le JS -->
 								</tbody>
 							</table>
+						</div>
+
+						<!-- Section Gestion des articles -->
+						<div id="admin-articles" class="admin-section" style="display: none;">
+							<h2>Gestion des articles</h2>
+							<button id="add-article-btn" class="button">Ajouter un article</button>
+							<table class="data-table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Code-barres</th>
+										<th>Nom</th>
+										<th>Catégorie</th>
+										<th>Condition</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody id="admin-article-list">
+									<!-- Articles will be injected here -->
+								</tbody>
+							</table>
+							<div id="article-form-container" class="form-container" style="display: none;">
+								<form id="article-form" class="auth-form">
+									<input type="hidden" id="article-id" value="">
+									<h3 id="article-form-title">Ajouter un article</h3>
+									<div class="form-group">
+										<label for="article-barcode">Code-barres</label>
+										<input type="text" id="article-barcode" required>
+									</div>
+									<div class="form-group">
+										<label for="article-name">Nom</label>
+										<input type="text" id="article-name" required>
+									</div>
+									<div class="form-group">
+										<label for="article-category">Catégorie</label>
+										<input type="text" id="article-category">
+									</div>
+									<div class="form-group">
+										<label for="article-condition">Condition</label>
+										<input type="text" id="article-condition">
+									</div>
+									<div class="form-error" id="article-error"></div>
+									<div class="form-actions">
+										<button type="submit" class="button">Enregistrer</button>
+										<button type="button" id="cancel-article-form" class="button button-secondary">Annuler</button>
+									</div>
+								</form>
+							</div>
 						</div>
 
 						<!-- Section Gestion des sondages -->
