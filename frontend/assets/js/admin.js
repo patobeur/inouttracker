@@ -2,12 +2,14 @@ const admin = (() => {
     let adminSections = {};
     let adminNavLinks = {};
     let articlesCache = []; // Cache pour les articles
+    let clientsCache = []; // Cache pour les clients
 
     function init() {
         adminSections = {
             dashboard: document.getElementById('admin-dashboard'),
             users: document.getElementById('admin-users'),
             articles: document.getElementById('admin-articles'),
+            clients: document.getElementById('admin-clients'),
             polls: document.getElementById('admin-polls'),
         };
 
@@ -23,6 +25,11 @@ const admin = (() => {
         document.getElementById('add-article-btn').addEventListener('click', showArticleFormForCreate);
         document.getElementById('article-form').addEventListener('submit', handleArticleFormSubmit);
         document.getElementById('cancel-article-form').addEventListener('click', hideArticleForm);
+
+        // Event listeners for client form
+        document.getElementById('add-client-btn').addEventListener('click', showClientFormForCreate);
+        document.getElementById('client-form').addEventListener('submit', handleClientFormSubmit);
+        document.getElementById('cancel-client-form').addEventListener('click', hideClientForm);
     }
 
     function handleAdminRoute() {
@@ -60,6 +67,7 @@ const admin = (() => {
             if (targetId === 'users') loadUsers();
             else if (targetId === 'dashboard') loadDashboardData();
             else if (targetId === 'articles') loadArticles();
+            else if (targetId === 'clients') loadClients();
         } else {
             if (adminSections.dashboard) adminSections.dashboard.style.display = 'block';
         }
@@ -246,4 +254,115 @@ const admin = (() => {
     return {
         init
     };
+
+    // --- Client Management ---
+
+    async function loadClients() {
+        try {
+            clientsCache = await api.get('admin/clients');
+            renderClientTable(clientsCache);
+        } catch (error) {
+            console.error("Erreur lors du chargement des clients", error);
+            document.getElementById('admin-client-list').innerHTML = '<tr><td colspan="7" class="error">Erreur de chargement des données.</td></tr>';
+        }
+    }
+
+    function renderClientTable(clients) {
+        const clientListBody = document.getElementById('admin-client-list');
+        clientListBody.innerHTML = '';
+        if (clients.length === 0) {
+            clientListBody.innerHTML = '<tr><td colspan="7">Aucun client trouvé.</td></tr>';
+            return;
+        }
+        clients.forEach(client => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td>' + client.id + '</td>' +
+                '<td>' + client.barcode + '</td>' +
+                '<td>' + client.first_name + '</td>' +
+                '<td>' + client.last_name + '</td>' +
+                '<td>' + (client.email || 'N/A') + '</td>' +
+                '<td>' + (client.phone || 'N/A') + '</td>' +
+                '<td class="actions">' +
+                '<button class="edit-client-btn" data-client-id="' + client.id + '">Modifier</button>' +
+                '<button class="delete-client-btn" data-client-id="' + client.id + '">Supprimer</button>' +
+                '</td>';
+            clientListBody.appendChild(tr);
+        });
+
+        clientListBody.querySelectorAll('.edit-client-btn').forEach(btn => btn.addEventListener('click', handleEditClient));
+        clientListBody.querySelectorAll('.delete-client-btn').forEach(btn => btn.addEventListener('click', handleDeleteClient));
+    }
+
+    function showClientFormForCreate() {
+        const formContainer = document.getElementById('client-form-container');
+        document.getElementById('client-form').reset();
+        document.getElementById('client-id').value = '';
+        document.getElementById('client-form-title').textContent = 'Ajouter un client';
+        ui.showModal(formContainer);
+    }
+
+    function showClientFormForEdit(clientId) {
+        const client = clientsCache.find(c => c.id === clientId);
+        if (!client) return;
+        const formContainer = document.getElementById('client-form-container');
+        document.getElementById('client-id').value = client.id;
+        document.getElementById('client-barcode').value = client.barcode;
+        document.getElementById('client-first_name').value = client.first_name;
+        document.getElementById('client-last_name').value = client.last_name;
+        document.getElementById('client-email').value = client.email || '';
+        document.getElementById('client-phone').value = client.phone || '';
+        document.getElementById('client-promo_id').value = client.promo_id;
+        document.getElementById('client-section_id').value = client.section_id;
+        document.getElementById('client-form-title').textContent = 'Modifier le client';
+        ui.showModal(formContainer);
+    }
+
+    function hideClientForm() {
+        ui.hideModal();
+        document.getElementById('client-error').textContent = '';
+    }
+
+    function handleEditClient(event) {
+        const clientId = parseInt(event.target.dataset.clientId, 10);
+        showClientFormForEdit(clientId);
+    }
+
+    async function handleDeleteClient(event) {
+        const clientId = event.target.dataset.clientId;
+        if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) return;
+        try {
+            await api.post('admin/clients/delete', { id: clientId });
+            loadClients();
+        } catch (error) {
+            alert('Erreur: ' + (error.error || 'Impossible de supprimer le client.'));
+        }
+    }
+
+    async function handleClientFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const clientId = form.querySelector('#client-id').value;
+        const data = {
+            barcode: form.querySelector('#client-barcode').value,
+            first_name: form.querySelector('#client-first_name').value,
+            last_name: form.querySelector('#client-last_name').value,
+            email: form.querySelector('#client-email').value,
+            phone: form.querySelector('#client-phone').value,
+            promo_id: form.querySelector('#client-promo_id').value,
+            section_id: form.querySelector('#client-section_id').value,
+        };
+
+        const endpoint = clientId ? 'admin/clients/update' : 'admin/clients/create';
+        if (clientId) {
+            data.id = clientId;
+        }
+
+        try {
+            await api.post(endpoint, data);
+            hideClientForm();
+            loadClients();
+        } catch (error) {
+            document.getElementById('client-error').textContent = error.error || 'Une erreur est survenue.';
+        }
+    }
 })();
